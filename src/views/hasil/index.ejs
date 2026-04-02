@@ -1,0 +1,194 @@
+<div class="container my-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">📊 Hasil Rekomendasi Belajar</h2>
+    <p class="text-muted">Analisis kebiasaan belajar & saran terbaik untuk kamu</p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+
+      <div class="card border-0 shadow-lg rounded-4 overflow-hidden main-card">
+
+        <!-- HEADER -->
+        <div class="p-4 text-center text-white header-gradient">
+          <h3 class="fw-bold mb-1"><%= data.nama %></h3>
+          <div class="mt-2">
+            <span class="badge bg-light text-dark me-2"><%= data.status %></span>
+            <span class="badge bg-light text-dark"><%= data.aktivitas %></span>
+          </div>
+        </div>
+
+        <!-- SKOR -->
+        <div class="text-center py-4">
+          <h6 class="text-muted mb-2">Skor Performa Belajar</h6>
+
+          <div class="score-wrapper">
+            <div class="score-circle">
+              <%= skor %>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <span class="badge px-3 py-2 kategori-badge
+              <%= kategori === 'Optimal' ? 'bg-success' : 
+                  kategori === 'Cukup' ? 'bg-warning text-dark' : 
+                  'bg-danger' %>">
+              <%= kategori %>
+            </span>
+          </div>
+        </div>
+
+        <hr class="mx-4"/>
+
+        <!-- REKOMENDASI -->
+        <div class="px-4 pb-4">
+          <h5 class="fw-semibold text-center mb-4">🎯 Rekomendasi Belajar Kamu</h5>
+
+          <% if (rekomendasi && Object.keys(rekomendasi).length > 0) { %>
+
+          <div class="info-grid">
+
+            <div class="info-box">
+              <div>📌</div>
+              <small>Metode</small>
+              <strong><%= rekomendasi.judul || '-' %></strong>
+            </div>
+
+            <div class="info-box">
+              <div>⏰</div>
+              <small>Waktu Ideal</small>
+              <strong><%= rekomendasi.waktu || '-' %></strong>
+            </div>
+
+            <div class="info-box full">
+              <div>📚</div>
+              <small>Pola Belajar</small>
+              <p><%= rekomendasi.pola || '-' %></p>
+            </div>
+
+            <div class="info-box full">
+              <div>🧠</div>
+              <small>Penjelasan</small>
+              <p><%= rekomendasi.deskripsi || '-' %></p>
+            </div>
+
+            <div class="info-box full">
+              <div>💡</div>
+              <small>Tips Praktis</small>
+
+              <% if (rekomendasi.tips && rekomendasi.tips.length > 0) { %>
+                <ul class="tips-list">
+                  <% rekomendasi.tips.forEach(tip => { %>
+                    <li>✔ <%= tip %></li>
+                  <% }) %>
+                </ul>
+              <% } else { %>
+                <p class="text-muted">Tidak ada tips</p>
+              <% } %>
+
+            </div>
+
+          </div>
+
+          <% } else { %>
+            <p class="text-muted text-center">Tidak ada rekomendasi tersedia</p>
+          <% } %>
+        </div>
+
+        <!-- BUTTON -->
+        <div class="text-center pb-4">
+          <a href="/" class="btn btn-gradient px-4 py-2 rounded-pill">
+            ⬅ Kembali
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .header-gradient {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+  }
+
+  .main-card:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+  }
+
+  .score-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .score-circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    animation: pop 0.5s ease;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .info-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+
+  .info-box.full {
+    grid-column: span 2;
+    text-align: left;
+  }
+
+  .info-box small {
+    display: block;
+    color: #888;
+  }
+
+  .info-box strong {
+    display: block;
+    font-size: 16px;
+  }
+
+  .tips-list {
+    padding-left: 15px;
+    margin: 0;
+  }
+
+  .tips-list li {
+    margin-bottom: 5px;
+  }
+
+  .btn-gradient {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    border: none;
+    transition: 0.3s;
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+</style>

@@ -1,0 +1,222 @@
+[
+  {
+    "kode": 1,
+    "judul": "Pagi Intensif",
+    "waktu": "05.30 – 08.00",
+    "pola": "60 menit belajar, 15 menit istirahat",
+    "deskripsi": "Belajar di pagi hari saat kondisi otak masih segar dan belum terbebani aktivitas lain sehingga tingkat konsentrasi berada pada kondisi optimal. Waktu ini sangat efektif untuk memahami materi baru yang kompleks karena daya serap informasi masih tinggi. Lingkungan yang relatif tenang di pagi hari juga membantu mengurangi distraksi sehingga proses belajar menjadi lebih fokus dan efisien.",
+    "tips": [
+      "Mulai dari materi paling sulit",
+      "Gunakan teknik active recall",
+      "Hindari distraksi (HP/notifikasi)"
+    ]
+  },
+  {
+    "kode": 2,
+    "judul": "Pagi + Malam Terstruktur",
+    "waktu": "06.00 – 07.30 & 19.00 – 21.00",
+    "pola": "50 menit belajar, 10 menit istirahat",
+    "deskripsi": "Menggabungkan sesi belajar pagi dan malam untuk memaksimalkan proses pemahaman serta retensi memori. Sesi pagi digunakan untuk menyerap materi baru ketika otak masih segar, sedangkan sesi malam dimanfaatkan untuk mengulang dan memperkuat pemahaman. Pola ini sangat efektif dalam meningkatkan daya ingat jangka panjang melalui pengulangan yang terstruktur.",
+    "tips": [
+      "Pagi fokus materi baru",
+      "Malam review & latihan soal",
+      "Gunakan spaced repetition"
+    ]
+  },
+  {
+    "kode": 3,
+    "judul": "Sore Produktif",
+    "waktu": "16.00 – 18.00",
+    "pola": "45 menit belajar, 15 menit istirahat",
+    "deskripsi": "Belajar pada sore hari setelah aktivitas utama selesai, ketika kondisi tubuh masih memiliki energi yang cukup stabil. Waktu ini cocok digunakan untuk mengerjakan latihan soal atau mengulang materi yang telah dipelajari sebelumnya. Meskipun tidak seoptimal pagi hari, sesi ini tetap produktif jika dilakukan dengan manajemen waktu yang baik.",
+    "tips": [
+      "Gunakan untuk latihan soal",
+      "Review materi pembelajaran",
+      "Jangan terlalu berat di awal"
+    ]
+  },
+  {
+    "kode": 4,
+    "judul": "Malam Fokus Tinggi",
+    "waktu": "19.30 – 22.00",
+    "pola": "60 menit belajar, 15 menit istirahat",
+    "deskripsi": "Belajar pada malam hari dalam suasana yang lebih tenang dan minim gangguan dari lingkungan sekitar. Kondisi ini memungkinkan peningkatan fokus dan konsentrasi, terutama bagi individu yang lebih produktif di malam hari. Namun, penting untuk menjaga keseimbangan agar tidak mengganggu waktu istirahat dan kesehatan tubuh.",
+    "tips": [
+      "Cari tempat belajar yang sunyi",
+      "Gunakan lampu yang nyaman",
+      "Hindari begadang berlebihan"
+    ]
+  },
+  {
+    "kode": 5,
+    "judul": "Pola Pomodoro",
+    "waktu": "Fleksibel",
+    "pola": "25 menit belajar, 5 menit istirahat (4x), lalu 20 menit istirahat",
+    "deskripsi": "Metode belajar dengan membagi waktu menjadi sesi-sesi pendek yang terstruktur untuk menjaga fokus dan mengurangi kelelahan mental. Teknik ini membantu meningkatkan produktivitas dengan memberikan jeda istirahat secara berkala, sehingga otak tidak cepat jenuh dan tetap mampu bekerja secara optimal dalam jangka waktu yang lebih lama.",
+    "tips": [
+      "Gunakan timer",
+      "Istirahat tanpa gadget",
+      "Evaluasi setelah 4 sesi"
+    ]
+  },
+  {
+    "kode": 6,
+    "judul": "Belajar Bertahap Ringan",
+    "waktu": "07.00 – 09.00",
+    "pola": "30 menit belajar, 10 menit istirahat",
+    "deskripsi": "Pola belajar yang dirancang untuk membangun kebiasaan secara bertahap dengan tekanan yang minimal. Cocok bagi individu yang ingin mulai konsisten belajar tanpa merasa terbebani. Dengan durasi yang ringan, metode ini membantu meningkatkan disiplin dan konsistensi dalam jangka panjang.",
+    "tips": [
+      "Mulai dari target kecil",
+      "Konsisten setiap hari",
+      "Naikkan durasi secara bertahap"
+    ]
+  },
+  {
+    "kode": 7,
+    "judul": "Siang Santai",
+    "waktu": "13.00 – 15.00",
+    "pola": "40 menit belajar, 20 menit istirahat",
+    "deskripsi": "Belajar ringan di siang hari saat energi tubuh mulai menurun. Sesi ini lebih cocok untuk aktivitas yang tidak terlalu berat seperti membaca, merangkum, atau memahami konsep dasar. Tujuannya adalah menjaga kontinuitas belajar tanpa memberikan beban kognitif yang berlebihan.",
+    "tips": [
+      "Fokus membaca & merangkum",
+      "Hindari materi berat",
+      "Minum air biar tetap segar"
+    ]
+  },
+  {
+    "kode": 8,
+    "judul": "Sesi Panjang Intensif",
+    "waktu": "08.00 – 11.00",
+    "pola": "90 menit belajar, 20 menit istirahat",
+    "deskripsi": "Sesi belajar panjang dengan fokus tinggi yang ditujukan untuk menyelesaikan materi kompleks atau target besar. Metode ini membutuhkan kondisi fisik dan mental yang prima karena melibatkan konsentrasi dalam waktu yang lama. Sangat efektif untuk deep learning dan penyelesaian tugas penting.",
+    "tips": [
+      "Gunakan teknik deep work",
+      "Tentukan target sebelum mulai",
+      "Jaga stamina & fokus"
+    ]
+  },
+  {
+    "kode": 9,
+    "judul": "Kombinasi Pagi & Sore",
+    "waktu": "06.30 – 07.30 & 16.30 – 18.00",
+    "pola": "45 menit belajar, 15 menit istirahat",
+    "deskripsi": "Menggunakan dua sesi belajar dalam satu hari untuk meningkatkan pemahaman dan retensi informasi. Sesi pagi digunakan untuk mempelajari konsep baru, sedangkan sesi sore digunakan untuk latihan dan penguatan materi. Pola ini membantu menjaga keseimbangan antara pemahaman dan praktik.",
+    "tips": [
+      "Pagi untuk teori",
+      "Sore untuk latihan",
+      "Jangan skip salah satu sesi"
+    ]
+  },
+  {
+    "kode": 10,
+    "judul": "Perbaikan Pola Belajar",
+    "waktu": "Fleksibel",
+    "pola": "25 menit belajar, 10 menit istirahat",
+    "deskripsi": "Pola belajar yang dirancang untuk membantu individu memperbaiki kebiasaan belajar yang belum konsisten. Fokus utama adalah membangun rutinitas yang stabil melalui durasi pendek dan teratur. Cocok bagi individu yang baru mulai atau ingin meningkatkan disiplin belajar.",
+    "tips": [
+      "Mulai dari durasi pendek",
+      "Buat jadwal tetap",
+      "Fokus ke konsistensi dulu"
+    ]
+  },
+  {
+    "kode": 11,
+    "judul": "Pagi Singkat Efektif",
+    "waktu": "06.00 – 07.00",
+    "pola": "30 menit belajar, 10 menit istirahat",
+    "deskripsi": "Memanfaatkan waktu singkat di pagi hari untuk belajar secara efektif dengan fokus pada materi penting. Meskipun durasinya pendek, metode ini tetap memberikan hasil optimal jika dilakukan secara konsisten dan terarah.",
+    "tips": ["Fokus materi penting", "Gunakan flashcard", "Jangan multitasking"]
+  },
+  {
+    "kode": 12,
+    "judul": "Malam Santai Bertahap",
+    "waktu": "20.00 – 22.00",
+    "pola": "40 menit belajar, 20 menit istirahat",
+    "deskripsi": "Belajar di malam hari dengan pendekatan santai dan bertahap untuk menjaga pemahaman tanpa tekanan. Metode ini cocok untuk review materi dan memperkuat ingatan tanpa menimbulkan stres atau kelelahan berlebih.",
+    "tips": ["Gunakan metode ringan", "Hindari stres", "Cocok untuk review"]
+  },
+  {
+    "kode": 13,
+    "judul": "Siang Intensif",
+    "waktu": "12.30 – 14.30",
+    "pola": "60 menit belajar, 15 menit istirahat",
+    "deskripsi": "Belajar intensif di siang hari dengan fokus pada penyelesaian tugas penting atau materi yang membutuhkan perhatian lebih. Cocok dilakukan ketika kondisi tubuh masih cukup stabil dan mampu mempertahankan konsentrasi dalam durasi sedang hingga panjang.",
+    "tips": [
+      "Kerjakan tugas penting",
+      "Hindari distraksi",
+      "Gunakan target jelas"
+    ]
+  },
+  {
+    "kode": 14,
+    "judul": "Belajar Fleksibel Harian",
+    "waktu": "Menyesuaikan jadwal",
+    "pola": "45 menit belajar, 15 menit istirahat",
+    "deskripsi": "Pola belajar fleksibel yang menyesuaikan dengan jadwal harian individu. Metode ini memberikan kebebasan dalam menentukan waktu belajar tanpa mengurangi produktivitas, selama tetap menjaga konsistensi dan disiplin.",
+    "tips": ["Gunakan to-do list", "Tetapkan prioritas", "Tetap disiplin waktu"]
+  },
+  {
+    "kode": 15,
+    "judul": "Fokus Pendek Berulang",
+    "waktu": "2–3 sesi per hari",
+    "pola": "20 menit belajar, 5–10 menit istirahat",
+    "deskripsi": "Belajar dengan sesi pendek yang dilakukan secara berulang untuk menjaga fokus dan menghindari kejenuhan. Metode ini sangat cocok bagi individu yang mudah bosan atau memiliki rentang perhatian yang pendek.",
+    "tips": [
+      "Cocok untuk yang mudah bosan",
+      "Gunakan timer",
+      "Ulangi materi penting"
+    ]
+  },
+  {
+    "kode": 16,
+    "judul": "Pagi + Siang Kombinasi",
+    "waktu": "07.00 – 08.00 & 13.00 – 14.00",
+    "pola": "45 menit belajar, 15 menit istirahat",
+    "deskripsi": "Menggabungkan sesi belajar pagi dan siang untuk memperkuat pemahaman melalui pengulangan dalam hari yang sama. Pendekatan ini membantu meningkatkan daya ingat dan memastikan materi benar-benar dipahami.",
+    "tips": ["Pagi belajar konsep", "Siang review ulang", "Catat poin penting"]
+  },
+  {
+    "kode": 17,
+    "judul": "Sore Ringan Konsisten",
+    "waktu": "16.30 – 17.30",
+    "pola": "30 menit belajar, 10 menit istirahat",
+    "deskripsi": "Belajar ringan di sore hari dengan fokus utama pada konsistensi. Meskipun durasinya singkat, metode ini efektif dalam membangun kebiasaan belajar jangka panjang jika dilakukan secara rutin.",
+    "tips": [
+      "Fokus ke kebiasaan",
+      "Jangan skip hari",
+      "Durasi kecil tapi rutin"
+    ]
+  },
+  {
+    "kode": 18,
+    "judul": "Malam Intensif Panjang",
+    "waktu": "19.00 – 22.30",
+    "pola": "90 menit belajar, 20 menit istirahat",
+    "deskripsi": "Sesi belajar malam dengan durasi panjang yang ditujukan untuk mengejar target besar atau memahami materi kompleks. Membutuhkan fokus tinggi dan pengelolaan waktu yang baik agar tidak mengganggu waktu istirahat.",
+    "tips": ["Gunakan deep work", "Minimalkan gangguan", "Istirahat cukup"]
+  },
+  {
+    "kode": 19,
+    "judul": "Belajar Adaptif Lingkungan",
+    "waktu": "Waktu paling tenang",
+    "pola": "45 menit belajar, 15 menit istirahat",
+    "deskripsi": "Pola belajar yang menyesuaikan dengan kondisi lingkungan untuk mendapatkan waktu paling optimal. Dengan memilih waktu yang paling tenang, individu dapat meningkatkan fokus dan kualitas belajar secara signifikan.",
+    "tips": [
+      "Cari waktu paling sepi",
+      "Gunakan noise control",
+      "Fokus kualitas belajar"
+    ]
+  },
+  {
+    "kode": 20,
+    "judul": "Pola Stabil Harian",
+    "waktu": "1–2 jam setiap hari",
+    "pola": "50 menit belajar, 10 menit istirahat",
+    "deskripsi": "Pola belajar yang menekankan konsistensi dengan durasi tetap setiap hari. Metode ini bertujuan membangun kebiasaan belajar jangka panjang yang stabil dan berkelanjutan, sehingga hasil belajar dapat meningkat secara bertahap.",
+    "tips": [
+      "Belajar di jam yang sama",
+      "Tracking progres",
+      "Fokus jangka panjang"
+    ]
+  }
+]
