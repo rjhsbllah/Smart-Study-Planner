@@ -42892,3 +42892,83 @@ fieldset:disabled .btn {
 .value {
   margin: 0;
 }
+
+.accordion-container {
+  width: 100%;
+  padding: 28px;
+
+  background: rgba(255, 255, 255, 0.4);
+
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* ITEM */
+.accordion-item {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+/* HEADER */
+.accordion-header {
+  width: 100%;
+  padding: 18px 22px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  text-align: left;
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  font-size: 17px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* ICON */
+.accordion-header::after {
+  content: "›";
+  font-size: 22px;
+  transform: rotate(90deg);
+  transition: transform 0.25s ease;
+}
+
+/* CONTENT */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+
+  padding: 0 22px;
+
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: #000;
+
+  transition: max-height 0.3s ease;
+}
+
+.accordion-content p {
+  padding-bottom: 18px;
+}
+
+/* ACTIVE */
+.accordion-header.active::after {
+  transform: rotate(-90deg);
+}
+
+.accordion-header.active + .accordion-content {
+  max-height: 300px;
+}
+
+/* HOVER ringan */
+.accordion-header:hover {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 18px;
+}
