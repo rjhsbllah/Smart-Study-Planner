@@ -3,7 +3,7 @@ const faqData = [
   {
     question: "Apa itu Smart Study Planner?",
     answer:
-      "Smart Study Planner adalah fitur yang membantu kamu menemukan cara belajar yang paling cocok dan nyaman sesuai dengan kebiasaanmu.",
+      "Smart Study Planner adalah aplikasi yang membantu kamu menemukan cara belajar yang paling cocok dan nyaman sesuai dengan kebiasaanmu.",
   },
   {
     question: "Kenapa saya perlu mengisi form ini?",
@@ -16,7 +16,7 @@ const faqData = [
       "Iya, supaya hasil rekomendasinya lebih akurat dan benar-benar sesuai dengan gaya belajarmu.",
   },
   {
-    question: "Berapa lama waktu untuk mengisi assessment ini?",
+    question: "Berapa lama waktu untuk mengisi pertanyaan-pertanyaan ini?",
     answer: "Tidak lama kok, hanya sekitar 1–2 menit saja.",
   },
   {
@@ -35,23 +35,9 @@ const faqData = [
       "Hasilnya adalah saran terbaik berdasarkan jawabanmu, tapi kamu tetap bisa menyesuaikannya sesuai kebutuhanmu.",
   },
   {
-    question: "Apakah data saya aman?",
-    answer:
-      "Ya, data yang kamu isi hanya digunakan untuk memberikan rekomendasi dan tidak disalahgunakan.",
-  },
-  {
-    question: "Bolehkah saya mengisi ulang assessment?",
+    question: "Bolehkah saya mengisi ulang pertanyaan?",
     answer:
       "Boleh banget! Kamu bisa mengisi ulang kapan saja kalau kebiasaan belajarmu berubah.",
-  },
-  {
-    question: "Apakah fitur ini gratis?",
-    answer: "Ya, kamu bisa menggunakan fitur ini secara gratis.",
-  },
-  {
-    question: "Apakah saya harus punya jadwal belajar sebelumnya?",
-    answer:
-      "Tidak perlu. Fitur ini justru membantu kamu membuat jadwal dari nol.",
   },
   {
     question: "Kalau saya sering malas belajar, apakah fitur ini membantu?",
@@ -77,16 +63,6 @@ const faqData = [
     question: "Apakah saya bisa meningkatkan hasil belajar dengan ini?",
     answer:
       "Dengan jadwal dan cara belajar yang lebih teratur, peluang kamu untuk belajar lebih efektif tentu akan meningkat.",
-  },
-  {
-    question: "Apakah saya perlu pengalaman belajar tertentu?",
-    answer:
-      "Tidak sama sekali. Fitur ini bisa digunakan oleh siapa saja, bahkan untuk pemula.",
-  },
-  {
-    question: "Apakah rekomendasi bisa berubah?",
-    answer:
-      "Ya, rekomendasi bisa berubah sesuai dengan jawaban atau kebiasaan belajar kamu yang terbaru.",
   },
   {
     question: "Apakah saya bisa menggunakan ini setiap hari?",
