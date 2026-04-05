@@ -1,18 +1,19 @@
 import hasilSpkCollection from "../models/hasilspk.js";
 import Rekomendasi from "../models/rekomendasi.js";
 
-const getAllHasilSpk = async (req, res, next) => {
-  try {
-    const hasilSpk = await hasilSpkCollection.find({});
-    const data = {
-      title: "SPK Pola & Waktu Belajar Optimal",
-      layout: "layouts/main",
-      data: hasilSpk,
-    };
-    res.render("landingpage/index", data);
-  } catch (error) {
-    next(error);
+const getAllHasilSpk = async (req, res) => {
+  const total = await hasilSpkCollection.countDocuments();
+
+  function formatNumber(num) {
+    if (num >= 1000000) return Math.floor(num / 1000000) + "M+";
+    if (num >= 1000) return Math.floor(num / 1000) + "K+";
+    return num.toString();
   }
+
+  res.render("landingpage/index", {
+    layout: "layouts/main",
+    totalResponden: formatNumber(total),
+  });
 };
 
 function getRekomendasi(data) {

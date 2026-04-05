@@ -10,11 +10,11 @@
             <span class="text-primary">Secara Cerdas</span>
             Kapan Saja, Di Mana Saja
           </h1>
-
           <p class="my-6 lead fw-normal">
             Temukan pola dan waktu belajar yang paling cocok untuk Anda. Belajar jadi lebih efektif, terarah, dan sesuai dengan kebutuhan Anda.
           </p>
-          <!-- Ganti untuk menampilkan jumlah responden dan rating dari responden -->
+
+          <!-- Ganti untuk menampilkan jumlah responden-->
           <div class="d-flex gap-6 mt-8">
             <div class="d-flex align-items-center gap-2">
               <span>
@@ -28,26 +28,12 @@
                   <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
                 </svg>
               </span>
-              <small class="mb-0"><span class="fw-bold">50K+</span> Responden</small>
-            </div>
-
-
-            <div class="d-flex align-items-center gap-2">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="icon icon-tabler icons-tabler-outline icon-tabler-award text-primary">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M12 9m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" />
-                  <path d="M12 15l3.4 5.89l1.598 -3.233l3.598 .232l-3.4 -5.889" />
-                  <path d="M6.802 12l-3.4 5.89l3.598 -.233l1.598 3.232l3.4 -5.889" />
-                </svg>
-
-              </span>
-              <small class="mb-0"><span class="fw-bold">4.9</span> Rating</small>
+              <small class="mb-0">
+                <span class="fw-bold"><%= totalResponden %></span> Responden
+              </small>
             </div>
           </div>
-          <!-- End ganti dengan jumlah responden dan rating -->
+          <!-- End ganti dengan jumlah responden-->
         </div>
         <div class="col-lg-6">
           <div class="card p-3 rounded-5  shadow-sm">
@@ -327,7 +313,7 @@
   <footer class="pt-lg-13 bg-light py-8">
     <div class="container">
       <div class="row gy-8">
-        <div class="col-md-4">
+        <div class="col-md-12">
           <div class="">
             <a class="d-inline-flex gap-2 align-items-center lh-1" href="index.html">
               <span class="text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
@@ -340,180 +326,12 @@
                   <path d="M12 6l0 13" />
                   <path d="M21 6l0 13" />
                 </svg></span>
-              <span class="fw-bold">LearnHub</span>
+              <span class="fw-bold">Smart Study Planner</span>
             </a>
-            <p class="mt-4 mb-6">Empowering millions of learners worldwide with industry-leading courses and expert
-              mentors.</p>
-            <div class="d-flex flex-column gap-2">
-              <span class="d-flex align-items-center gap-2">
-                <span class="text-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-mail">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
-                    <path d="M3 7l9 6l9 -6" />
-                  </svg>
-
-                </span>
-                <span>hello@learnhub.com</span>
-
-              </span>
-              <span class="d-flex align-items-center gap-2">
-                <span class="text-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-phone">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path
-                      d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
-                  </svg>
-
-                </span>
-                <span>+1 (234) 567-890</span>
-              </span>
-              <span class="d-flex align-items-center gap-2">
-                <span class="text-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                    <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
-                  </svg>
-
-                </span>
-                <span>San Francisco, CA</span>
-              </span>
-            </div>
-
-
-
-
-
-
+            <p class="mt-4 mb-6">Membantu anda mengatur waktu dan pola belajar secara efektif untuk hasil yang lebih optimal.</p>
           </div>
-
         </div>
-        <div class="col-md-8">
-          <div class="row">
-            <div class="col-lg-3 col-md-6">
-              <div class="">
-                <h4 class="fs-5 mb-4">Product</h4>
-                <ul class="list-unstyled lh-lg small">
-                  <li><a href="#">Features</a>
-
-
-                  </li>
-                  <li><a href="#">Pricing</a></li>
-                  <li><a href="#">Courses</a></li>
-                  <li><a href="#">Community</a></li>
-                </ul>
-              </div>
-
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div>
-                <h4 class="fs-5 mb-4">Company</h4>
-                <ul class="list-unstyled lh-lg small">
-                  <li><a href="#">About Us</a>
-
-
-                  </li>
-                  <li><a href="#">Careers</a></li>
-                  <li><a href="#">Blog</a></li>
-                  <li><a href="#">Press</a></li>
-                </ul>
-              </div>
-
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div>
-                <h4 class="fs-5 mb-4">Support</h4>
-                <ul class="list-unstyled lh-lg small">
-                  <li><a href="#">Help Center</a>
-
-
-                  </li>
-                  <li><a href="#">Contact Us</a></li>
-                  <li><a href="#">Privacy Policy</a></li>
-                  <li><a href="#">Terms of Service</a></li>
-                </ul>
-              </div>
-
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div>
-                <h4 class="fs-5 mb-4">Help Center</h4>
-                <ul class="list-unstyled lh-lg small">
-                  <li><a href="#">Web Development</a>
-
-
-                  </li>
-                  <li><a href="#">UI/UX Design</a></li>
-                  <li><a href="#">Data Science</a></li>
-                  <li><a href="#">Marketing</a></li>
-                </ul>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
       </div>
-      <div class="border-top mt-8 pt-6 row small">
-        <div class="col-12 d-flex flex-column flex-md-row justify-content-between">
-          <div>
-            <p>© 2026 LearnHub. All rights reserved. Developed by <a href="https://codescandy.com/" class="link-primary" target="_blank">Codescandy</a> • Distributed by <a href="https://themewagon.com/" class="link-primary" target="_blank">ThemeWagon</a>
-            </p>
-          </div>
-          <div>
-            <div class="">
-
-              <a href="#" class="btn rounded-circle btn-light btn-icon btn-xs">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-x">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
-                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
-                </svg>
-
-              </a>
-              <a href="#" class="btn rounded-circle btn-light btn-icon btn-xs">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-linkedin ">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M8 11v5"></path>
-                  <path d="M8 8v.01"></path>
-                  <path d="M12 16v-5"></path>
-                  <path d="M16 16v-3a2 2 0 1 0 -4 0"></path>
-                  <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z"></path>
-                </svg>
-
-              </a>
-              <a href="#" class="btn rounded-circle btn-light btn-icon btn-xs">
-
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="icon icon-tabler icons-tabler-brand-github ">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12 12 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5">
-                  </path>
-                </svg>
-
-              </a>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
   </footer>
 
