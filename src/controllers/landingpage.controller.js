@@ -17,43 +17,62 @@ const getAllHasilSpk = async (req, res) => {
 };
 
 function getRekomendasi(data) {
-  const { skor, aktivitas, kelelahan, konsentrasi, gangguan, lingkungan } =
-    data;
+  const {
+    skor,
+    aktivitas,
+    kelelahan,
+    konsentrasi,
+    gangguan,
+    lingkungan,
+    durasi,
+  } = data;
 
   const act = aktivitas.toLowerCase();
 
+  // 🔵 SKOR SANGAT TINGGI
   if (skor >= 0.85) {
-    if (kelelahan <= 2) return 8;
-    return 18;
+    if (kelelahan <= 2) return 8; // kuat → sesi panjang
+    if (act === "bekerja") return 18; // malam panjang
+    return 4; // malam fokus tinggi
   }
 
+  // 🟢 SKOR TINGGI
   if (skor >= 0.7) {
-    if (act === "tinggi") return 1;
-    if (gangguan >= 4) return 19;
+    if (act === "sekolah") return 1;
+    if (act === "kuliah") return 2;
+    if (gangguan <= 2) return 19;
     return 9;
   }
 
+  // 🟡 SKOR MENENGAH ATAS
   if (skor >= 0.55) {
-    if (konsentrasi >= 4) return 2;
+    if (konsentrasi >= 4 && durasi >= 4) return 13;
     if (lingkungan <= 2) return 14;
+    if (act.includes("bekerja")) return 16;
     return 3;
   }
 
+  // 🟠 SKOR MENENGAH
   if (skor >= 0.4) {
     if (kelelahan >= 4) return 7;
-    if (gangguan >= 4) return 15;
+    if (gangguan <= 2) return 15;
+    if (konsentrasi <= 2) return 17;
     return 5;
   }
 
+  // 🔴 SKOR RENDAH
   if (skor >= 0.25) {
     if (konsentrasi <= 2) return 6;
+    if (konsistensi <= 2) return 20;
     return 11;
   }
 
+  // 🔴 SANGAT RENDAH
   if (skor >= 0.1) {
     return 12;
   }
 
+  // 🔴 TERENDAH
   return 10;
 }
 
@@ -106,6 +125,8 @@ const postHitung = async (req, res) => {
       konsentrasi: Number(konsentrasi),
       gangguan: Number(gangguan),
       lingkungan: Number(lingkungan),
+      durasi: Number(durasi),
+      konsistensi: Number(konsistensi),
     });
 
     const rekomendasiData = await Rekomendasi.findOne({
