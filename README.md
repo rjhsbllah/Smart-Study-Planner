@@ -1,4 +1,4 @@
-# 📌 SPK (Sistem Pendukung Keputusan)
+# SPK (Sistem Pendukung Keputusan)
 
 Project ini adalah aplikasi berbasis **Node.js** menggunakan **Express.js** dengan template engine **EJS**. Aplikasi ini digunakan untuk membangun sistem pendukung keputusan (SPK).
 
