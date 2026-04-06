@@ -4,7 +4,7 @@ Project ini adalah aplikasi berbasis **Node.js** menggunakan **Express.js** deng
 
 ---
 
-## 🚀 Fitur Utama
+## Fitur Utama
 
 - Backend menggunakan **Express.js**
 - Template engine **EJS**
@@ -16,7 +16,7 @@ Project ini adalah aplikasi berbasis **Node.js** menggunakan **Express.js** deng
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 Project ini menggunakan beberapa library utama:
 
@@ -35,7 +35,7 @@ Project ini menggunakan beberapa library utama:
 
 ---
 
-## ⚙️ Requirements
+## Requirements
 
 Pastikan kamu sudah menginstall:
 
@@ -45,7 +45,7 @@ Pastikan kamu sudah menginstall:
 
 ---
 
-## 🔧 Installation
+## Installation
 
 1. Clone repository:
 
@@ -62,7 +62,7 @@ npm install
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 Buat file `.env` di root project, lalu isi contoh berikut:
 
@@ -74,7 +74,7 @@ SESSION_SECRET=your_secret_key
 
 ---
 
-## ▶️ Running Project
+## Running Project
 
 Jalankan mode development:
 
@@ -86,7 +86,7 @@ Script ini menggunakan **nodemon** untuk auto-restart server saat ada perubahan 
 
 ---
 
-## 📁 Struktur Folder (umum)
+## Struktur Folder (umum)
 
 ```
 src/
@@ -100,14 +100,14 @@ public/
 
 ---
 
-## 📝 Scripts
+## Scripts
 
 - `npm run dev` → menjalankan server dengan nodemon
 - `npm test` → default (belum digunakan)
 
 ---
 
-## 🚫 File yang Tidak Di-push
+## File yang Tidak Di-push
 
 Pastikan file berikut tidak di-upload ke GitHub:
 
@@ -119,13 +119,13 @@ logs/
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 - Nama: (Isi nama kamu)
 - Project: Skripsi SPK
 
 ---
 
-## 📄 License
+## License
 
 ISC
