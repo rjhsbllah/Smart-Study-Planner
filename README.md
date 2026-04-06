@@ -112,7 +112,7 @@ Pastikan file berikut tidak di-upload ke GitHub:
 ```
 node_modules/
 .env
-logs/
+rekomendasi.json
 ```
 
 ---
