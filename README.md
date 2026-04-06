@@ -67,9 +67,7 @@ npm install
 Buat file `.env` di root project, lalu isi contoh berikut:
 
 ```env
-PORT=3000
 MONGO_URI=your_mongodb_connection
-SESSION_SECRET=your_secret_key
 ```
 
 ---
