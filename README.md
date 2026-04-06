@@ -119,8 +119,8 @@ rekomendasi.json
 
 ## Author
 
-- Nama: (Isi nama kamu)
-- Project: Skripsi SPK
+- Nama: R Hasbullah
+- Project: Skripsi Sistem Pendukung Keputusan Penentuan Pola dan Waktu Belajar Berbasis Web Menggunakan Metode Simple Additive Weighting (SAW)
 
 ---
 
