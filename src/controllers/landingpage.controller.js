@@ -4,6 +4,11 @@ import Rekomendasi from "../models/rekomendasi.js";
 const getAllHasilSpk = async (req, res) => {
   const total = await hasilSpkCollection.countDocuments();
 
+  const riwayat = await hasilSpkCollection
+    .find()
+    .sort({ createdAt: -1 })
+    .limit(6);
+
   function formatNumber(num) {
     if (num >= 1000000) return Math.floor(num / 1000000) + "M+";
     if (num >= 1000) return Math.floor(num / 1000) + "K+";
@@ -13,6 +18,7 @@ const getAllHasilSpk = async (req, res) => {
   res.render("landingpage/index", {
     layout: "layouts/main",
     totalResponden: formatNumber(total),
+    riwayat,
   });
 };
 
@@ -29,14 +35,12 @@ function getRekomendasi(data) {
 
   const act = aktivitas.toLowerCase();
 
-  // 🔵 SKOR SANGAT TINGGI
   if (skor >= 0.85) {
-    if (kelelahan <= 2) return 8; // kuat → sesi panjang
-    if (act === "bekerja") return 18; // malam panjang
-    return 4; // malam fokus tinggi
+    if (kelelahan <= 2) return 8;
+    if (act === "bekerja") return 18;
+    return 4;
   }
 
-  // 🟢 SKOR TINGGI
   if (skor >= 0.7) {
     if (act === "sekolah") return 1;
     if (act === "kuliah") return 2;
@@ -44,7 +48,6 @@ function getRekomendasi(data) {
     return 9;
   }
 
-  // 🟡 SKOR MENENGAH ATAS
   if (skor >= 0.55) {
     if (konsentrasi >= 4 && durasi >= 4) return 13;
     if (lingkungan <= 2) return 14;
@@ -52,7 +55,6 @@ function getRekomendasi(data) {
     return 3;
   }
 
-  // 🟠 SKOR MENENGAH
   if (skor >= 0.4) {
     if (kelelahan >= 4) return 7;
     if (gangguan <= 2) return 15;
@@ -60,19 +62,16 @@ function getRekomendasi(data) {
     return 5;
   }
 
-  // 🔴 SKOR RENDAH
   if (skor >= 0.25) {
     if (konsentrasi <= 2) return 6;
     if (konsistensi <= 2) return 20;
     return 11;
   }
 
-  // 🔴 SANGAT RENDAH
   if (skor >= 0.1) {
     return 12;
   }
 
-  // 🔴 TERENDAH
   return 10;
 }
 
@@ -182,4 +181,27 @@ const postHitung = async (req, res) => {
   }
 };
 
-export { getAllHasilSpk, postHitung };
+const getRiwayat = async (req, res) => {
+  try {
+    const riwayat = await hasilSpkCollection
+      .find()
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .lean();
+
+    res.render("riwayat/index", {
+      layout: "layouts/main",
+      riwayat,
+      title: "Riwayat Rekomendasi",
+    });
+  } catch (error) {
+    console.error("Error getRiwayat:", error);
+
+    res.status(500).render("error", {
+      layout: "layouts/main",
+      message: "Gagal mengambil data riwayat",
+    });
+  }
+};
+
+export { getAllHasilSpk, postHitung, getRiwayat };
