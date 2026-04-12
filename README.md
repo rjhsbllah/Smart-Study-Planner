@@ -25,10 +25,7 @@ Project ini menggunakan beberapa library utama:
 - mongoose
 - dotenv
 - multer
-- express-session
-- express-flash
 - body-parser
-- cookie-parser
 - sass
 
 (Semua dependency dapat dilihat di file package.json)
