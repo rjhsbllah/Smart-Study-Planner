@@ -142,6 +142,7 @@ const postHitung = async (req, res) => {
       return res.send("Rekomendasi tidak ditemukan");
     }
 
+    const skorPersen = Math.round(skor * 100);
     const data = await hasilSpkCollection.create({
       nama,
       gender,
@@ -156,7 +157,7 @@ const postHitung = async (req, res) => {
       lingkungan: Number(lingkungan),
       gangguan: Number(gangguan),
 
-      skor: Number(skor.toFixed(3)),
+      skor: skorPersen,
 
       rekomendasi: {
         kode: rekomendasiData.kode,
@@ -171,7 +172,7 @@ const postHitung = async (req, res) => {
     res.render("hasil/index", {
       layout: "layouts/main",
       data,
-      skor: skor.toFixed(3),
+      skor: skorPersen,
       rekomendasi: data.rekomendasi || {},
       kategori,
     });
