@@ -132,12 +132,6 @@ const postHitung = async (req, res) => {
       kode: kodeTerpilih,
     });
 
-    let kategori = "";
-
-    if (skor >= 0.75) kategori = "Optimal";
-    else if (skor >= 0.5) kategori = "Cukup";
-    else kategori = "Perlu Perbaikan";
-
     if (!rekomendasiData) {
       return res.send("Rekomendasi tidak ditemukan");
     }
@@ -174,7 +168,6 @@ const postHitung = async (req, res) => {
       data,
       skor: skorPersen,
       rekomendasi: data.rekomendasi || {},
-      kategori,
     });
   } catch (err) {
     console.error(err);
