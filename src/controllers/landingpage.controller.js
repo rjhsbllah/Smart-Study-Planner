@@ -28,6 +28,7 @@ function getRekomendasi(data) {
     aktivitas,
     kelelahan,
     konsentrasi,
+    konsistensi,
     gangguan,
     lingkungan,
     durasi,
