@@ -10,8 +10,6 @@ Project ini adalah aplikasi berbasis **Node.js** menggunakan **Express.js** deng
 - Template engine **EJS**
 - Database menggunakan **MongoDB** dengan **Mongoose**
 - Upload file dengan **Multer**
-- Session & authentication support
-- Flash message
 - Styling dengan **SASS**
 
 ---
@@ -98,19 +96,8 @@ public/
 ## Scripts
 
 - `npm run dev` → menjalankan server dengan nodemon
-- `npm test` → default (belum digunakan)
 
 ---
-
-## File yang Tidak Di-push
-
-Pastikan file berikut tidak di-upload ke GitHub:
-
-```
-node_modules/
-.env
-rekomendasi.json
-```
 
 ---
 
