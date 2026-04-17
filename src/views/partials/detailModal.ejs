@@ -1,21 +1,36 @@
-<div class="modal fade" id="detailModal" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content rounded-5 border-0 shadow-lg overflow-hidden">
-      <!-- Header -->
-      <div class="bg-primary bg-opacity-10 p-4 border-0">
+<div
+  class="modal fade"
+  id="detailModal"
+  tabindex="-1"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div
+    class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+  >
+    <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+      <!-- HEADER HIJAU -->
+      <div
+        class="p-4 text-white"
+        style="background: linear-gradient(135deg, #16a34a, #22c55e)"
+      >
         <div class="d-flex justify-content-between align-items-start">
           <div>
             <h5 class="fw-bold mb-1" id="modalJudul"></h5>
-            <small class="text-muted">Rekomendasi Belajar</small>
+            <small class="opacity-75">Rekomendasi Belajar</small>
           </div>
+
           <button
             type="button"
-            class="btn-close"
+            class="btn-close btn-close-white"
             data-bs-dismiss="modal"
           ></button>
         </div>
       </div>
+
+      <!-- BODY -->
       <div class="modal-body p-4">
+        <!-- USER INFO -->
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div>
             <p class="mb-1 small text-muted">Nama</p>
@@ -25,34 +40,42 @@
           <div class="text-end">
             <p class="mb-1 small text-muted">Skor</p>
             <span
-              class="badge bg-primary bg-opacity-10 text-primary fs-6 px-3 py-2"
+              class="badge bg-success-subtle text-success fw-semibold px-3 py-2 rounded-pill"
             >
               <span id="modalSkor"></span>
             </span>
           </div>
         </div>
 
-        <hr class="my-4" />
-
-        <div class="row mb-4">
+        <!-- INFO CARDS -->
+        <div class="row g-3 mb-4">
           <div class="col-md-6">
-            <p class="small text-muted mb-1">Waktu Belajar</p>
-            <h6 class="fw-semibold" id="modalWaktu"></h6>
+            <div class="p-3 rounded-3 border bg-light h-100">
+              <p class="small text-muted mb-1">⏰ Waktu Belajar</p>
+              <h6 class="fw-semibold mb-0" id="modalWaktu"></h6>
+            </div>
           </div>
+
           <div class="col-md-6">
-            <p class="small text-muted mb-1">Pola Belajar</p>
-            <h6 class="fw-semibold" id="modalPola"></h6>
+            <div class="p-3 rounded-3 border bg-light h-100">
+              <p class="small text-muted mb-1">📊 Pola Belajar</p>
+              <h6 class="fw-semibold mb-0" id="modalPola"></h6>
+            </div>
           </div>
         </div>
 
+        <!-- DESKRIPSI -->
         <div class="mb-4">
-          <p class="small text-muted mb-1">Deskripsi</p>
-          <p class="mb-0" id="modalDeskripsi"></p>
+          <p class="small text-muted mb-2">📌 Deskripsi</p>
+          <div class="p-3 bg-light rounded-3 border">
+            <p class="mb-0" id="modalDeskripsi"></p>
+          </div>
         </div>
 
+        <!-- TIPS -->
         <div>
-          <p class="small text-muted mb-2">Tips Belajar</p>
-          <ol class="ps-3" id="modalTips"></ol>
+          <p class="small text-muted mb-2">💡 Tips Belajar</p>
+          <ul class="list-unstyled ps-0" id="modalTips"></ul>
         </div>
       </div>
     </div>

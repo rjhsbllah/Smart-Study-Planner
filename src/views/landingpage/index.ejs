@@ -99,6 +99,9 @@
 
                 <a href="#"
                   class="text-primary small fw-semibold btn-detail"
+                  data-bs-toggle="modal"
+                  data-bs-target="#detailModal"
+
                   data-id="<%= item._id %>"
                   data-nama="<%= item.nama %>"
                   data-skor="<%= item.skor %>"
@@ -106,7 +109,9 @@
                   data-waktu="<%= item.rekomendasi.waktu %>"
                   data-pola="<%= item.rekomendasi.pola %>"
                   data-deskripsi="<%= item.rekomendasi.deskripsi %>"
-                  data-tips='<%= JSON.stringify(item.rekomendasi.tips) %>'>
+
+                  data-tips='<%- JSON.stringify(item.rekomendasi.tips || []) %>'>
+
                   Lihat detail →
                 </a>
 
@@ -119,6 +124,7 @@
           <div class="col-12 text-center">
             <p class="text-muted">Belum ada data hasil rekomendasi</p>
           </div>
+
         <% } %>
       </div>
     </div>
