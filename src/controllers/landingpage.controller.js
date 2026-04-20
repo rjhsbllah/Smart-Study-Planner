@@ -1,7 +1,9 @@
 import hasilSpkCollection from "../models/hasilspk.js";
 import Rekomendasi from "../models/rekomendasi.js";
+import connectDB from "../config/db.js";
 
 const getAllHasilSpk = async (req, res) => {
+  await connectDB();
   const total = await hasilSpkCollection.countDocuments();
 
   const riwayat = await hasilSpkCollection
@@ -231,6 +233,7 @@ function generateAlasan(user, waktu_luang, kategori, faktorDominan) {
 }
 
 const postHitung = async (req, res) => {
+  await connectDB();
   try {
     const {
       nama,
