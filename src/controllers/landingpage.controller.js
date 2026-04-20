@@ -22,6 +22,29 @@ const getAllHasilSpk = async (req, res) => {
   });
 };
 
+function getBobotAdaptif(status, aktivitas) {
+  let bobot = {
+    konsentrasi: 0.2,
+    konsistensi: 0.2,
+    durasi: 0.15,
+    kelelahan: 0.15,
+    lingkungan: 0.15,
+    gangguan: 0.15,
+  };
+
+  if (status === "pekerja") {
+    bobot.durasi += 0.05;
+    bobot.konsistensi += 0.05;
+    bobot.konsentrasi -= 0.05;
+  }
+
+  if (aktivitas.toLowerCase().includes("kuliah")) {
+    bobot.konsentrasi += 0.05;
+  }
+
+  return bobot;
+}
+
 function getRekomendasi(data) {
   const {
     skor,
@@ -69,11 +92,142 @@ function getRekomendasi(data) {
     return 11;
   }
 
-  if (skor >= 0.1) {
-    return 12;
-  }
+  if (skor >= 0.1) return 12;
 
   return 10;
+}
+
+function getFaktorDominan(normalisasi, bobot) {
+  const kontribusi = Object.keys(normalisasi).map((k) => ({
+    nama: k,
+    nilai: normalisasi[k] * bobot[k],
+  }));
+
+  kontribusi.sort((a, b) => b.nilai - a.nilai);
+
+  return kontribusi.slice(0, 2);
+}
+
+function adaptDeskripsi(base, user) {
+  let hasil = base;
+
+  if (user.kelelahan >= 4)
+    hasil += " Kondisi kelelahan tinggi sehingga durasi belajar dibatasi.";
+
+  if (user.konsentrasi <= 2)
+    hasil += " Konsentrasi rendah sehingga digunakan metode bertahap.";
+
+  if (user.gangguan <= 2)
+    hasil += " Lingkungan memiliki gangguan sehingga perlu penyesuaian.";
+
+  if (user.konsistensi <= 2)
+    hasil += " Konsistensi rendah sehingga disarankan jadwal sederhana.";
+
+  return hasil;
+}
+
+function adaptTips(baseTips, user) {
+  let tips = [...baseTips];
+
+  if (user.kelelahan >= 4)
+    tips.push("Pastikan istirahat cukup sebelum belajar.");
+
+  if (user.konsentrasi <= 2) tips.push("Gunakan teknik pomodoro.");
+
+  if (user.konsistensi <= 2) tips.push("Buat jadwal belajar harian.");
+
+  if (user.gangguan <= 2) tips.push("Cari tempat belajar yang lebih tenang.");
+
+  return tips;
+}
+
+function generateWaktuHybrid(kategori, waktu_luang, user, pola) {
+  let finalKategori = waktu_luang || kategori;
+
+  let start;
+  switch (finalKategori) {
+    case "pagi":
+      start = 6;
+      break;
+    case "siang":
+      start = 12;
+      break;
+    case "sore":
+      start = 16;
+      break;
+    case "malam":
+      start = 19;
+      break;
+    default:
+      return "Menyesuaikan jadwal";
+  }
+
+  let durasi;
+
+  if (user.kelelahan === 5) durasi = 1;
+  else if (user.kelelahan === 4) durasi = 1.5;
+  else if (user.kelelahan === 3) durasi = 2;
+  else durasi = 2.5;
+
+  if (user.kelelahan <= 3) {
+    if (user.konsentrasi >= 4) durasi += 0.5;
+    if (user.konsentrasi <= 2) durasi -= 0.5;
+  }
+
+  if (durasi < 1) durasi = 1;
+  if (durasi > 3) durasi = 3;
+
+  let belajar = 50;
+  let istirahat = 10;
+
+  const match = pola.match(/(\d+).*?(\d+)/);
+  if (match) {
+    belajar = Number(match[1]);
+    istirahat = Number(match[2]);
+  }
+
+  const siklus = belajar + istirahat;
+  const totalMenit = durasi * 60;
+
+  let jumlahSiklus = Math.floor(totalMenit / siklus);
+  if (jumlahSiklus < 1) jumlahSiklus = 1;
+
+  const totalDipakai = jumlahSiklus * siklus;
+  let end = start + totalDipakai / 60;
+
+  function format(j) {
+    const h = Math.floor(j);
+    const m = (j % 1) * 60;
+    return `${String(h).padStart(2, "0")}.${m === 0 ? "00" : "30"}`;
+  }
+
+  return `${format(start)} – ${format(end)}`;
+}
+
+function generateAlasan(user, waktu_luang, kategori, faktorDominan) {
+  const alasan = [];
+
+  faktorDominan.forEach((f) => {
+    if (f.nama === "kelelahan")
+      alasan.push("Kelelahan mempengaruhi durasi belajar");
+
+    if (f.nama === "konsentrasi")
+      alasan.push("Konsentrasi mempengaruhi panjang sesi belajar");
+
+    if (f.nama === "gangguan")
+      alasan.push("Lingkungan mempengaruhi fokus belajar");
+
+    if (f.nama === "konsistensi")
+      alasan.push("Konsistensi mempengaruhi pola belajar");
+  });
+
+  if (waktu_luang && waktu_luang !== kategori) {
+    alasan.push(
+      `Waktu belajar disesuaikan dengan preferensi pengguna (${waktu_luang})`,
+    );
+  }
+
+  return alasan;
 }
 
 const postHitung = async (req, res) => {
@@ -84,6 +238,7 @@ const postHitung = async (req, res) => {
       usia,
       status,
       aktivitas,
+      waktu_luang,
       konsentrasi,
       konsistensi,
       durasi,
@@ -92,22 +247,15 @@ const postHitung = async (req, res) => {
       gangguan,
     } = req.body;
 
-    const bobot = {
-      konsentrasi: 0.2,
-      konsistensi: 0.2,
-      durasi: 0.15,
-      kelelahan: 0.15,
-      lingkungan: 0.15,
-      gangguan: 0.15,
-    };
+    const bobot = getBobotAdaptif(status, aktivitas);
 
     const normalisasi = {
-      konsentrasi: Number(konsentrasi) / 5,
-      konsistensi: Number(konsistensi) / 5,
-      durasi: Number(durasi) / 5,
-      kelelahan: Number(kelelahan) / 5,
-      lingkungan: Number(lingkungan) / 5,
-      gangguan: Number(gangguan) / 5,
+      konsentrasi: konsentrasi / 5,
+      konsistensi: konsistensi / 5,
+      durasi: durasi / 5,
+      kelelahan: kelelahan / 5,
+      lingkungan: lingkungan / 5,
+      gangguan: gangguan / 5,
     };
 
     const skor =
@@ -118,49 +266,78 @@ const postHitung = async (req, res) => {
       normalisasi.lingkungan * bobot.lingkungan +
       normalisasi.gangguan * bobot.gangguan;
 
+    const faktorDominan = getFaktorDominan(normalisasi, bobot);
+
     const kodeTerpilih = getRekomendasi({
       skor,
       aktivitas,
-      kelelahan: Number(kelelahan),
-      konsentrasi: Number(konsentrasi),
-      gangguan: Number(gangguan),
-      lingkungan: Number(lingkungan),
-      durasi: Number(durasi),
-      konsistensi: Number(konsistensi),
+      kelelahan,
+      konsentrasi,
+      gangguan,
+      lingkungan,
+      durasi,
+      konsistensi,
     });
 
     const rekomendasiData = await Rekomendasi.findOne({
       kode: kodeTerpilih,
     });
 
-    if (!rekomendasiData) {
-      return res.send("Rekomendasi tidak ditemukan");
-    }
+    if (!rekomendasiData) return res.send("Rekomendasi tidak ditemukan");
+
+    const userData = {
+      kelelahan,
+      konsentrasi,
+      gangguan,
+      konsistensi,
+    };
+
+    const deskripsiFinal = adaptDeskripsi(
+      rekomendasiData.deskripsi_base,
+      userData,
+    );
+
+    const tipsFinal = adaptTips(rekomendasiData.tips_base, userData);
+
+    const waktuFinal = generateWaktuHybrid(
+      rekomendasiData.kategori_waktu,
+      waktu_luang,
+      userData,
+      rekomendasiData.pola_default,
+    );
+
+    const alasanFinal = generateAlasan(
+      userData,
+      waktu_luang,
+      rekomendasiData.kategori_waktu,
+      faktorDominan,
+    );
 
     const skorPersen = Math.round(skor * 100);
+
     const data = await hasilSpkCollection.create({
       nama,
       gender,
-      usia: Number(usia),
+      usia,
       status,
       aktivitas,
-
-      konsentrasi: Number(konsentrasi),
-      konsistensi: Number(konsistensi),
-      durasi: Number(durasi),
-      kelelahan: Number(kelelahan),
-      lingkungan: Number(lingkungan),
-      gangguan: Number(gangguan),
-
+      waktu_luang,
+      konsentrasi,
+      konsistensi,
+      durasi,
+      kelelahan,
+      lingkungan,
+      gangguan,
       skor: skorPersen,
-
       rekomendasi: {
         kode: rekomendasiData.kode,
         judul: rekomendasiData.judul,
-        waktu: rekomendasiData.waktu,
-        pola: rekomendasiData.pola,
-        deskripsi: rekomendasiData.deskripsi,
-        tips: rekomendasiData.tips,
+        waktu: waktuFinal,
+        pola: rekomendasiData.pola_default,
+        deskripsi: deskripsiFinal,
+        tips: tipsFinal,
+        alasan: alasanFinal,
+        faktor: faktorDominan.map((f) => f.nama),
       },
     });
 
@@ -168,7 +345,7 @@ const postHitung = async (req, res) => {
       layout: "layouts/main",
       data,
       skor: skorPersen,
-      rekomendasi: data.rekomendasi || {},
+      rekomendasi: data.rekomendasi,
     });
   } catch (err) {
     console.error(err);
@@ -177,26 +354,16 @@ const postHitung = async (req, res) => {
 };
 
 const getRiwayat = async (req, res) => {
-  try {
-    const riwayat = await hasilSpkCollection
-      .find()
-      .sort({ createdAt: -1 })
-      .limit(6)
-      .lean();
+  const riwayat = await hasilSpkCollection
+    .find()
+    .sort({ createdAt: -1 })
+    .limit(6)
+    .lean();
 
-    res.render("riwayat/index", {
-      layout: "layouts/main",
-      riwayat,
-      title: "Riwayat Rekomendasi",
-    });
-  } catch (error) {
-    console.error("Error getRiwayat:", error);
-
-    res.status(500).render("error", {
-      layout: "layouts/main",
-      message: "Gagal mengambil data riwayat",
-    });
-  }
+  res.render("riwayat/index", {
+    layout: "layouts/main",
+    riwayat,
+  });
 };
 
 export { getAllHasilSpk, postHitung, getRiwayat };
