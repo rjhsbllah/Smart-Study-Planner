@@ -4,7 +4,8 @@ import appMiddlewares from "./middlewares/index.js";
 import connectDB from "./config/db.js";
 const app = express();
 const PORT = 5000;
-
+console.log("TYPE:", typeof connectDB);
+console.log("VALUE:", connectDB);
 import path from "path";
 import { fileURLToPath } from "url";
 
