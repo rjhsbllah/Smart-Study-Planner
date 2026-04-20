@@ -1,6 +1,6 @@
-import mongoose from "../config/db.js";
+import connectDB from "../config/db.js";
 
-const hasilSpk = new mongoose.Schema(
+const hasilSpk = new connectDB.Schema(
   {
     nama: {
       type: String,
@@ -81,6 +81,6 @@ const hasilSpk = new mongoose.Schema(
   },
 );
 
-const hasilSpkCollection = mongoose.model("HasilSpk", hasilSpk);
+const hasilSpkCollection = connectDB.model("HasilSpk", hasilSpk);
 
 export default hasilSpkCollection;
