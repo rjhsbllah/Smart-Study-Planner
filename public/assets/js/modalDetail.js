@@ -1,89 +1,113 @@
 document.addEventListener("DOMContentLoaded", function () {
   const modalEl = document.getElementById("detailModal");
 
-  if (!modalEl) {
-    console.error("Modal tidak ditemukan");
-    return;
-  }
-
   document.querySelectorAll(".btn-detail").forEach((btn) => {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
 
-      console.log("klik tombol detail");
+      const data = this.dataset;
 
-      document.getElementById("modalNama").innerText = this.dataset.nama || "-";
-      document.getElementById("modalSkor").innerText = this.dataset.skor || "-";
-      document.getElementById("modalJudul").innerText =
-        this.dataset.judul || "-";
-      document.getElementById("modalWaktu").innerText =
-        this.dataset.waktu || "-";
-      document.getElementById("modalPola").innerText = this.dataset.pola || "-";
-      document.getElementById("modalDeskripsi").innerText =
-        this.dataset.deskripsi || "-";
+      setText("modalNama", data.nama);
+      setText("modalSkor", data.skor);
+      setText("modalJudul", data.judul);
+      setText("modalWaktu", data.waktu);
+      setText("modalPola", data.pola);
+      setText("modalDeskripsi", data.deskripsi);
 
-      let tips = [];
-      try {
-        tips = JSON.parse(this.dataset.tips || "[]");
-      } catch (err) {
-        console.error("Error parsing tips:", err);
-      }
+      setText("modalGender", data.gender);
+      setText("modalUsia", data.usia);
+      setText("modalStatus", data.status);
+      setText("modalAktivitas", data.aktivitas);
 
-      const tipsContainer = document.getElementById("modalTips");
+      setText("modalWaktuLuang", data.waktu_luang);
+      setText("modalKonsentrasi", labelSkala(data.konsentrasi));
+      setText("modalKonsistensi", labelSkala(data.konsistensi));
+      setText("modalDurasi", labelSkala(data.durasi));
+      setText("modalKelelahan", labelSkala(data.kelelahan));
+      setText("modalLingkungan", labelSkala(data.lingkungan));
+      setText("modalGangguan", labelSkala(data.gangguan));
 
-      tipsContainer.innerHTML = tips
-        .map(
-          (t) => `
-          <li class="d-flex align-items-start gap-2 mb-2 p-2 rounded-2 bg-light border">
-            <span class="text-success fw-bold">✔</span>
-            <span>${t}</span>
-          </li>
-        `,
-        )
-        .join("");
+      renderList("modalTips", parseJSON(data.tips));
+      renderList("modalAlasan", parseJSON(data.alasan));
 
-      document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
+      renderFaktor("modalFaktor", parseJSON(data.faktor));
 
-      modalEl.classList.add("show");
-      modalEl.style.display = "block";
-      modalEl.removeAttribute("aria-hidden");
-      modalEl.setAttribute("aria-modal", "true");
-
-      const backdrop = document.createElement("div");
-      backdrop.className = "modal-backdrop fade show";
-      backdrop.id = "custom-backdrop";
-      backdrop.style.pointerEvents = "none";
-      document.body.appendChild(backdrop);
-
-      document.body.classList.add("modal-open");
+      openModal(modalEl);
     });
   });
 
   document.querySelectorAll('[data-bs-dismiss="modal"]').forEach((btn) => {
-    btn.addEventListener("click", function () {
-      closeModal();
-    });
+    btn.addEventListener("click", closeModal);
   });
 
   function closeModal() {
     modalEl.classList.remove("show");
     modalEl.style.display = "none";
-    modalEl.setAttribute("aria-hidden", "true");
-
     document.body.classList.remove("modal-open");
 
-    document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
+    const backdrop = document.getElementById("custom-backdrop");
+    if (backdrop) backdrop.remove();
   }
 
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      e.preventDefault();
-    }
-  });
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = value || "-";
+  }
 
-  modalEl.addEventListener("click", function (e) {
-    if (e.target === modalEl) {
-      e.stopPropagation();
+  function parseJSON(data) {
+    try {
+      return JSON.parse(data || "[]");
+    } catch {
+      return [];
     }
-  });
+  }
+
+  function renderList(id, items) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.innerHTML = items.length
+      ? items.map((i) => `<li>• ${i}</li>`).join("")
+      : "<li class='text-muted'>-</li>";
+  }
+
+  function renderFaktor(id, items) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.innerHTML = items.length
+      ? `<div class="faktor-wrapper">
+          ${items
+            .map((f) => `<span class="faktor-badge">${formatFaktor(f)}</span>`)
+            .join("")}
+         </div>`
+      : "<span class='text-muted'>-</span>";
+  }
+
+  function formatFaktor(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  function labelSkala(val) {
+    const map = {
+      1: "Rendah",
+      2: "Sedang",
+      3: "Tinggi",
+    };
+    return map[val] || val || "-";
+  }
+
+  function openModal(modalEl) {
+    modalEl.classList.add("show");
+    modalEl.style.display = "block";
+    document.body.classList.add("modal-open");
+
+    const oldBackdrop = document.getElementById("custom-backdrop");
+    if (oldBackdrop) oldBackdrop.remove();
+
+    const backdrop = document.createElement("div");
+    backdrop.className = "modal-backdrop show";
+    backdrop.id = "custom-backdrop";
+    document.body.appendChild(backdrop);
+  }
 });
