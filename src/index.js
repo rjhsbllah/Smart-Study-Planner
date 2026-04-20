@@ -1,6 +1,7 @@
 import express from "express";
 import routes from "./routes/landingpage.routes.js";
 import appMiddlewares from "./middlewares/index.js";
+import connectDB from "./config/db.js";
 const app = express();
 const PORT = 5000;
 
@@ -12,7 +13,7 @@ const __dirname = path.dirname(__filename);
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
+await connectDB();
 app.use(appMiddlewares);
 app.use(routes);
 
