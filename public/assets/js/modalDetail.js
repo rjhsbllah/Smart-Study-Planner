@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!el) return;
 
     el.innerHTML = items.length
-      ? items.map((i) => `<li>- ${i}</li>`).join("")
+      ? items.map((i) => `<li> ${i}</li>`).join("")
       : "<li class='text-muted'>-</li>";
   }
 
