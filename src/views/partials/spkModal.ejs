@@ -1,33 +1,29 @@
 <div class="modal fade" id="spkModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable">
-    <div class="modal-content rounded-5">
-      <div class="modal-header">
+    <div class="modal-content rounded-4 shadow-lg">
+      <div class="modal-header bg-success text-white">
         <h5 class="modal-title fw-bold">Smart Study Planner Assessment</h5>
         <button
           type="button"
-          class="btn-close"
+          class="btn-close btn-close-white"
           data-bs-dismiss="modal"
-          aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body p-5">
-        <p class="text-muted mb-4">
-          Isi identitas dan jawab pertanyaan berikut untuk mendapatkan
-          rekomendasi pola dan waktu belajar optimal.
-        </p>
+
+      <div class="modal-body p-4">
+        <small class="text-muted mb-4">
+          Isi data berikut untuk mendapatkan rekomendasi pola dan waktu belajar
+          optimal berdasarkan kondisi Anda menggunakan metode SAW dan pendekatan
+          Explainable AI.
+        </small>
 
         <form action="/hitung" method="POST">
           <h6 class="fw-bold mb-3">Identitas Responden</h6>
+
           <div class="row">
             <div class="mb-3">
               <label class="form-label">Nama Lengkap</label>
-              <input
-                type="text"
-                name="nama"
-                class="form-control"
-                required
-                placeholder="Nama Lengkap"
-              />
+              <input type="text" name="nama" class="form-control" required />
             </div>
 
             <div class="col-md-6 mb-3">
@@ -41,13 +37,7 @@
 
             <div class="col-md-6 mb-3">
               <label class="form-label">Usia</label>
-              <input
-                type="number"
-                name="usia"
-                class="form-control"
-                required
-                placeholder="Usia"
-              />
+              <input type="number" name="usia" class="form-control" required />
             </div>
 
             <div class="col-md-6 mb-3">
@@ -56,6 +46,7 @@
                 <option value="">Pilih</option>
                 <option value="Pelajar">Pelajar</option>
                 <option value="Mahasiswa">Mahasiswa</option>
+                <option value="Pekerja">Pekerja</option>
                 <option value="Umum">Umum</option>
               </select>
             </div>
@@ -67,37 +58,43 @@
                 <option value="Sekolah">Sekolah</option>
                 <option value="Kuliah">Kuliah</option>
                 <option value="Bekerja">Bekerja</option>
-                <option value="Kuliah Sambil Bekerja">
-                  Kuliah Sambil Bekerja
-                </option>
+                <option value="Kuliah Sambil Bekerja">Kuliah & Bekerja</option>
               </select>
             </div>
           </div>
 
           <hr class="my-4" />
 
-          <h6 class="fw-bold mb-3">Penilaian Pola Belajar</h6>
+          <h6 class="fw-bold mb-3">Penilaian Kondisi Belajar</h6>
+
+          <p class="text-muted small mb-3">
+            Berikan penilaian sesuai kondisi Anda saat ini
+          </p>
 
           <div class="mb-4">
             <label class="form-label fw-semibold">
-              Seberapa baik Anda dapat berkonsentrasi saat belajar?
+              Tingkat konsentrasi saat belajar
             </label>
+            <small class="text-muted d-block mb-1">
+              1 (Sangat sulit fokus) – 5 (Sangat mudah fokus)
+            </small>
             <select name="konsentrasi" class="form-select" required>
-              <option value="">Pilih jawaban</option>
+              <option value="">Pilih</option>
               <option value="1">Sangat sulit fokus</option>
               <option value="2">Sulit fokus</option>
               <option value="3">Cukup fokus</option>
-              <option value="4">Mudah fokus</option>
+              <option value="4">Mudah Fokus</option>
               <option value="5">Sangat mudah fokus</option>
             </select>
           </div>
 
           <div class="mb-4">
-            <label class="form-label fw-semibold">
-              Seberapa rutin Anda belajar setiap hari?
-            </label>
+            <label class="form-label fw-semibold"> Konsistensi belajar </label>
+            <small class="text-muted d-block mb-1">
+              1 (Tidak pernah belajar) – 5 (Sangat rutin belajar)
+            </small>
             <select name="konsistensi" class="form-select" required>
-              <option value="">Pilih jawaban</option>
+              <option value="">Pilih</option>
               <option value="1">Tidak pernah</option>
               <option value="2">Jarang</option>
               <option value="3">Kadang-kadang</option>
@@ -108,40 +105,49 @@
 
           <div class="mb-4">
             <label class="form-label fw-semibold">
-              Berapa lama Anda mampu belajar dalam satu sesi?
+              Durasi belajar per sesi
             </label>
+            <small class="text-muted d-block mb-1">
+              1 (Kurang dari 30 menit) – 5 (Lebih dari 3 jam)
+            </small>
             <select name="durasi" class="form-select" required>
-              <option value="">Pilih jawaban</option>
+              <option value="">Pilih</option>
               <option value="1">&lt; 30 menit</option>
-              <option value="2">30–60 menit</option>
-              <option value="3">1–2 jam</option>
-              <option value="4">2–3 jam</option>
+              <option value="2">30 – 60 menit</option>
+              <option value="3">1 – 2 jam</option>
+              <option value="4">2 – 3 jam</option>
               <option value="5">&gt; 3 jam</option>
             </select>
           </div>
 
           <div class="mb-4">
             <label class="form-label fw-semibold">
-              Seberapa cepat Anda merasa lelah saat belajar?
+              Tingkat kelelahan saat belajar
             </label>
+            <small class="text-muted d-block mb-1">
+              1 (Tidak Mudah lelah) – 5 (Sangat cepat lelah)
+            </small>
             <select name="kelelahan" class="form-select" required>
-              <option value="">Pilih jawaban</option>
-              <option value="1">Sangat cepat lelah</option>
-              <option value="2">Cepat lelah</option>
-              <option value="3">Cukup tahan</option>
-              <option value="4">Tidak mudah lelah</option>
-              <option value="5">Sangat tahan lama</option>
+              <option value="">Pilih</option>
+              <option value="1">Tidak mudah lelah</option>
+              <option value="2">Sedikit lelah</option>
+              <option value="3">Cukup lelah</option>
+              <option value="4">Cepat lelah</option>
+              <option value="5">Sangat cepat lelah</option>
             </select>
           </div>
 
           <div class="mb-4">
             <label class="form-label fw-semibold">
-              Seberapa kondusif lingkungan belajar Anda?
+              Kondisi lingkungan belajar
             </label>
+            <small class="text-muted d-block mb-1">
+              1 (Sangat mengganggu) – 5 (Sangat kondusif)
+            </small>
             <select name="lingkungan" class="form-select" required>
-              <option value="">Pilih jawaban</option>
+              <option value="">Pilih</option>
               <option value="1">Sangat mengganggu</option>
-              <option value="2">Mengganggu</option>
+              <option value="2">Kurang kondusif</option>
               <option value="3">Cukup kondusif</option>
               <option value="4">Kondusif</option>
               <option value="5">Sangat kondusif</option>
@@ -150,11 +156,13 @@
 
           <div class="mb-4">
             <label class="form-label fw-semibold">
-              Seberapa sering Anda terdistraksi (HP, sosial media, dll) saat
-              belajar?
+              Frekuensi distraksi saat belajar
             </label>
+            <small class="text-muted d-block mb-1">
+              1 (Sangat sering) – 5 (Sangat jarang)
+            </small>
             <select name="gangguan" class="form-select" required>
-              <option value="">Pilih jawaban</option>
+              <option value="">Pilih</option>
               <option value="1">Sangat sering</option>
               <option value="2">Sering</option>
               <option value="3">Kadang-kadang</option>
@@ -163,7 +171,28 @@
             </select>
           </div>
 
+          <div class="mb-4">
+            <label class="form-label fw-semibold">
+              Waktu luang utama untuk belajar
+            </label>
+            <small class="text-muted d-block mb-1">
+              Pilih waktu anda yang sering kosong
+            </small>
+            <select name="waktu_luang" class="form-select" required>
+              <option value="">Pilih</option>
+              <option value="pagi">Pagi</option>
+              <option value="siang">Siang</option>
+              <option value="sore">Sore</option>
+              <option value="malam">Malam</option>
+            </select>
+          </div>
+
           <div class="d-grid mt-4">
+            <small class="text-muted small">
+              Sistem akan menghasilkan rekomendasi berdasarkan kondisi Anda dan
+              memberikan penjelasan keputusan.
+            </small>
+
             <button type="submit" class="btn btn-success btn-lg rounded-pill">
               Lihat Rekomendasi
             </button>
