@@ -70,10 +70,28 @@ const hasilSpk = new mongoose.Schema(
       judul: String,
       waktu: String,
       pola: String,
+
       deskripsi: String,
       tips: [String],
       alasan: [String],
       faktor: [String],
+
+      ai_path: [String],
+
+      feature_importance: {
+        type: Map,
+        of: Number,
+      },
+
+      jadwal: [
+        {
+          type: {
+            type: String,
+          },
+          sesi: Number,
+          waktu: String,
+        },
+      ],
     },
   },
   {

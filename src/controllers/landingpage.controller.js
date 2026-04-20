@@ -2,8 +2,164 @@ import hasilSpkCollection from "../models/hasilspk.js";
 import Rekomendasi from "../models/rekomendasi.js";
 import connectDB from "../config/db.js";
 
+import {
+  prediksiAI,
+  getDecisionPath,
+  getFeatureImportance,
+} from "../ai/predict.js";
+
+/* =========================
+   MAP FITUR
+========================= */
+const fiturMap = {
+  0: "Konsentrasi",
+  1: "Konsistensi",
+  2: "Durasi",
+  3: "Kelelahan",
+  4: "Lingkungan",
+  5: "Gangguan",
+};
+
+/* =========================
+   FORMAT JAM
+========================= */
+function formatTime(time) {
+  const jam = Math.floor(time);
+  const menit = Math.round((time - jam) * 60);
+  return `${jam}.${menit.toString().padStart(2, "0")}`;
+}
+
+/* =========================
+   MULTI SESSION OTOMATIS
+========================= */
+function generateMultiSession(user, pola) {
+  let belajar = 30;
+  let istirahat = 10;
+
+  const match = pola.match(/(\d+)\s*menit belajar,\s*(\d+)\s*menit istirahat/i);
+
+  if (match) {
+    belajar = Number(match[1]);
+    istirahat = Number(match[2]);
+  }
+
+  let sesi = 2;
+
+  if (user.konsentrasi >= 4) sesi = 3;
+  if (user.konsentrasi <= 2) sesi = 2;
+  if (user.kelelahan >= 4) sesi = Math.max(1, sesi - 1);
+
+  return {
+    belajar,
+    istirahat,
+    sesi,
+    totalMenit: (belajar + istirahat) * sesi,
+  };
+}
+
+/* =========================
+   WAKTU DARI SESSION
+========================= */
+function generateWaktuFromSession(waktu_luang, kategori, sessionData) {
+  const jamMap = {
+    pagi: 6,
+    siang: 12,
+    sore: 16,
+    malam: 19,
+  };
+
+  const start = jamMap[waktu_luang || kategori] ?? 6;
+  const end = start + sessionData.totalMenit / 60;
+
+  return {
+    start,
+    text: `${formatTime(start)} – ${formatTime(end)}`,
+  };
+}
+
+/* =========================
+   PLANNER HARIAN
+========================= */
+function generatePlanner(start, sessionData) {
+  let current = start;
+  const jadwal = [];
+
+  const includeLastBreak = true;
+
+  for (let i = 1; i <= sessionData.sesi; i++) {
+    let endBelajar = current + sessionData.belajar / 60;
+
+    jadwal.push({
+      type: "Belajar",
+      sesi: i,
+      waktu: `${formatTime(current)} - ${formatTime(endBelajar)}`,
+    });
+
+    current = endBelajar;
+
+    if (i !== sessionData.sesi || includeLastBreak) {
+      let endIstirahat = current + sessionData.istirahat / 60;
+
+      jadwal.push({
+        type: "Istirahat",
+        sesi: i,
+        waktu: `${formatTime(current)} - ${formatTime(endIstirahat)}`,
+      });
+
+      current = endIstirahat;
+    }
+  }
+
+  return jadwal;
+}
+
+/* =========================
+   🔥 GENERATE ALASAN (BARU)
+========================= */
+function generateAlasan(user, faktor) {
+  const alasan = [];
+
+  if (faktor.includes("Konsentrasi")) {
+    alasan.push(
+      user.konsentrasi <= 2
+        ? "Konsentrasi rendah mempengaruhi efektivitas belajar"
+        : "Konsentrasi cukup baik untuk mendukung belajar",
+    );
+  }
+
+  if (faktor.includes("Konsistensi")) {
+    alasan.push(
+      user.konsistensi <= 2
+        ? "Konsistensi belajar masih kurang stabil"
+        : "Konsistensi belajar sudah cukup baik",
+    );
+  }
+
+  if (faktor.includes("Durasi")) {
+    alasan.push("Durasi belajar mempengaruhi hasil pemahaman");
+  }
+
+  if (faktor.includes("Kelelahan") && user.kelelahan >= 4) {
+    alasan.push("Kelelahan tinggi membuat belajar kurang optimal");
+  }
+
+  if (faktor.includes("Lingkungan")) {
+    alasan.push("Lingkungan belajar mempengaruhi fokus");
+  }
+
+  if (faktor.includes("Gangguan")) {
+    alasan.push("Gangguan dapat menurunkan konsentrasi belajar");
+  }
+
+  return alasan;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
 const getAllHasilSpk = async (req, res) => {
   await connectDB();
+
   const total = await hasilSpkCollection.countDocuments();
 
   const riwayat = await hasilSpkCollection
@@ -11,313 +167,135 @@ const getAllHasilSpk = async (req, res) => {
     .sort({ createdAt: -1 })
     .limit(6);
 
-  function formatNumber(num) {
-    if (num >= 1000000) return Math.floor(num / 1000000) + "M+";
-    if (num >= 1000) return Math.floor(num / 1000) + "K+";
-    return num.toString();
-  }
-
   res.render("landingpage/index", {
     layout: "layouts/main",
-    totalResponden: formatNumber(total),
+    totalResponden: total,
     riwayat,
   });
 };
 
-function getBobotAdaptif(status, aktivitas) {
-  let bobot = {
-    konsentrasi: 0.2,
-    konsistensi: 0.2,
-    durasi: 0.15,
-    kelelahan: 0.15,
-    lingkungan: 0.15,
-    gangguan: 0.15,
-  };
-
-  if (status === "pekerja") {
-    bobot.durasi += 0.05;
-    bobot.konsistensi += 0.05;
-    bobot.konsentrasi -= 0.05;
-  }
-
-  if (aktivitas.toLowerCase().includes("kuliah")) {
-    bobot.konsentrasi += 0.05;
-  }
-
-  return bobot;
-}
-
-function getRekomendasi(data) {
-  const {
-    skor,
-    aktivitas,
-    kelelahan,
-    konsentrasi,
-    konsistensi,
-    gangguan,
-    lingkungan,
-    durasi,
-  } = data;
-
-  const act = aktivitas.toLowerCase();
-
-  if (skor >= 0.85) {
-    if (kelelahan <= 2) return 8;
-    if (act === "bekerja") return 18;
-    return 4;
-  }
-
-  if (skor >= 0.7) {
-    if (act === "sekolah") return 1;
-    if (act === "kuliah") return 2;
-    if (gangguan <= 2) return 19;
-    return 9;
-  }
-
-  if (skor >= 0.55) {
-    if (konsentrasi >= 4 && durasi >= 4) return 13;
-    if (lingkungan <= 2) return 14;
-    if (act.includes("bekerja")) return 16;
-    return 3;
-  }
-
-  if (skor >= 0.4) {
-    if (kelelahan >= 4) return 7;
-    if (gangguan <= 2) return 15;
-    if (konsentrasi <= 2) return 17;
-    return 5;
-  }
-
-  if (skor >= 0.25) {
-    if (konsentrasi <= 2) return 6;
-    if (konsistensi <= 2) return 20;
-    return 11;
-  }
-
-  if (skor >= 0.1) return 12;
-
-  return 10;
-}
-
-function getFaktorDominan(normalisasi, bobot) {
-  const kontribusi = Object.keys(normalisasi).map((k) => ({
-    nama: k,
-    nilai: normalisasi[k] * bobot[k],
-  }));
-
-  kontribusi.sort((a, b) => b.nilai - a.nilai);
-
-  return kontribusi.slice(0, 2);
-}
-
-function adaptDeskripsi(base, user) {
-  let hasil = base;
-
-  if (user.kelelahan >= 4)
-    hasil += " Kondisi kelelahan tinggi sehingga durasi belajar dibatasi.";
-
-  if (user.konsentrasi <= 2)
-    hasil += " Konsentrasi rendah sehingga digunakan metode bertahap.";
-
-  if (user.gangguan <= 2)
-    hasil += " Lingkungan memiliki gangguan sehingga perlu penyesuaian.";
-
-  if (user.konsistensi <= 2)
-    hasil += " Konsistensi rendah sehingga disarankan jadwal sederhana.";
-
-  return hasil;
-}
-
-function adaptTips(baseTips, user) {
-  let tips = [...baseTips];
-
-  if (user.kelelahan >= 4)
-    tips.push("Pastikan istirahat cukup sebelum belajar.");
-
-  if (user.konsentrasi <= 2) tips.push("Gunakan teknik pomodoro.");
-
-  if (user.konsistensi <= 2) tips.push("Buat jadwal belajar harian.");
-
-  if (user.gangguan <= 2) tips.push("Cari tempat belajar yang lebih tenang.");
-
-  return tips;
-}
-
-function generateWaktuHybrid(kategori, waktu_luang, user, pola) {
-  let finalKategori = waktu_luang || kategori;
-
-  let start;
-  switch (finalKategori) {
-    case "pagi":
-      start = 6;
-      break;
-    case "siang":
-      start = 12;
-      break;
-    case "sore":
-      start = 16;
-      break;
-    case "malam":
-      start = 19;
-      break;
-    default:
-      return "Menyesuaikan jadwal";
-  }
-
-  let durasi;
-
-  if (user.kelelahan === 5) durasi = 1;
-  else if (user.kelelahan === 4) durasi = 1.5;
-  else if (user.kelelahan === 3) durasi = 2;
-  else durasi = 2.5;
-
-  if (user.kelelahan <= 3) {
-    if (user.konsentrasi >= 4) durasi += 0.5;
-    if (user.konsentrasi <= 2) durasi -= 0.5;
-  }
-
-  if (durasi < 1) durasi = 1;
-  if (durasi > 3) durasi = 3;
-
-  let belajar = 50;
-  let istirahat = 10;
-
-  const match = pola.match(/(\d+).*?(\d+)/);
-  if (match) {
-    belajar = Number(match[1]);
-    istirahat = Number(match[2]);
-  }
-
-  const siklus = belajar + istirahat;
-  const totalMenit = durasi * 60;
-
-  let jumlahSiklus = Math.floor(totalMenit / siklus);
-  if (jumlahSiklus < 1) jumlahSiklus = 1;
-
-  const totalDipakai = jumlahSiklus * siklus;
-  let end = start + totalDipakai / 60;
-
-  function format(j) {
-    const h = Math.floor(j);
-    const m = (j % 1) * 60;
-    return `${String(h).padStart(2, "0")}.${m === 0 ? "00" : "30"}`;
-  }
-
-  return `${format(start)} – ${format(end)}`;
-}
-
-function generateAlasan(user, waktu_luang, kategori, faktorDominan) {
-  const alasan = [];
-
-  faktorDominan.forEach((f) => {
-    if (f.nama === "kelelahan")
-      alasan.push("Kelelahan mempengaruhi durasi belajar");
-
-    if (f.nama === "konsentrasi")
-      alasan.push("Konsentrasi mempengaruhi panjang sesi belajar");
-
-    if (f.nama === "gangguan")
-      alasan.push("Lingkungan mempengaruhi fokus belajar");
-
-    if (f.nama === "konsistensi")
-      alasan.push("Konsistensi mempengaruhi pola belajar");
-  });
-
-  if (waktu_luang && waktu_luang !== kategori) {
-    alasan.push(
-      `Waktu belajar disesuaikan dengan preferensi pengguna (${waktu_luang})`,
-    );
-  }
-
-  return alasan;
-}
-
+/* =========================
+   POST HITUNG
+========================= */
 const postHitung = async (req, res) => {
   await connectDB();
+
   try {
-    const {
-      nama,
-      gender,
-      usia,
-      status,
-      aktivitas,
-      waktu_luang,
-      konsentrasi,
-      konsistensi,
-      durasi,
-      kelelahan,
-      lingkungan,
-      gangguan,
-    } = req.body;
+    const { nama, gender, usia, status, aktivitas, waktu_luang } = req.body;
 
-    const bobot = getBobotAdaptif(status, aktivitas);
-
-    const normalisasi = {
-      konsentrasi: konsentrasi / 5,
-      konsistensi: konsistensi / 5,
-      durasi: durasi / 5,
-      kelelahan: kelelahan / 5,
-      lingkungan: lingkungan / 5,
-      gangguan: gangguan / 5,
+    const userData = {
+      konsentrasi: Number(req.body.konsentrasi),
+      konsistensi: Number(req.body.konsistensi),
+      durasi: Number(req.body.durasi),
+      kelelahan: Number(req.body.kelelahan),
+      lingkungan: Number(req.body.lingkungan),
+      gangguan: Number(req.body.gangguan),
     };
 
+    if (Object.values(userData).some((v) => isNaN(v))) {
+      return res.send("Input tidak valid");
+    }
+
+    /* =========================
+       SKOR
+    ========================= */
     const skor =
-      normalisasi.konsentrasi * bobot.konsentrasi +
-      normalisasi.konsistensi * bobot.konsistensi +
-      normalisasi.durasi * bobot.durasi +
-      normalisasi.kelelahan * bobot.kelelahan +
-      normalisasi.lingkungan * bobot.lingkungan +
-      normalisasi.gangguan * bobot.gangguan;
+      (userData.konsentrasi +
+        userData.konsistensi +
+        userData.durasi +
+        userData.kelelahan +
+        userData.lingkungan +
+        userData.gangguan) /
+      6;
 
-    const faktorDominan = getFaktorDominan(normalisasi, bobot);
+    const skorPersen = Math.round((skor / 5) * 100);
 
-    const kodeTerpilih = getRekomendasi({
-      skor,
-      aktivitas,
-      kelelahan,
-      konsentrasi,
-      gangguan,
-      lingkungan,
-      durasi,
-      konsistensi,
+    /* =========================
+       AI
+    ========================= */
+    let kodeTerpilih = 12;
+    try {
+      kodeTerpilih = prediksiAI(userData);
+    } catch {}
+
+    /* =========================
+       XAI PATH
+    ========================= */
+    let rawPath = getDecisionPath(Object.values(userData));
+
+    const decisionPath = rawPath
+      .filter((s) => s && !s.includes("undefined") && !s.includes("⚠️"))
+      .map((s) => s.replace(/Fitur\[(\d)\]/g, (_, n) => fiturMap[n]));
+
+    /* =========================
+       FEATURE IMPORTANCE
+    ========================= */
+    let rawImportance = getFeatureImportance();
+
+    let importanceObj =
+      rawImportance instanceof Map
+        ? Object.fromEntries(rawImportance)
+        : rawImportance;
+
+    Object.keys(importanceObj).forEach((k) => {
+      if (k.includes("$") || k === "undefined") delete importanceObj[k];
     });
 
+    const featureImportance = Object.entries(importanceObj).reduce(
+      (acc, [k, v]) => {
+        acc[fiturMap[k]] = v;
+        return acc;
+      },
+      {},
+    );
+
+    const faktorDominan = Object.entries(featureImportance)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 2)
+      .map(([k]) => k);
+
+    /* =========================
+       REKOMENDASI
+    ========================= */
     const rekomendasiData = await Rekomendasi.findOne({
       kode: kodeTerpilih,
     });
 
-    if (!rekomendasiData) return res.send("Rekomendasi tidak ditemukan");
+    if (!rekomendasiData) {
+      return res.send("Rekomendasi tidak ditemukan");
+    }
 
-    const userData = {
-      kelelahan,
-      konsentrasi,
-      gangguan,
-      konsistensi,
-    };
-
-    const deskripsiFinal = adaptDeskripsi(
-      rekomendasiData.deskripsi_base,
-      userData,
-    );
-
-    const tipsFinal = adaptTips(rekomendasiData.tips_base, userData);
-
-    const waktuFinal = generateWaktuHybrid(
-      rekomendasiData.kategori_waktu,
-      waktu_luang,
+    /* =========================
+       SESSION + PLANNER
+    ========================= */
+    const sessionData = generateMultiSession(
       userData,
       rekomendasiData.pola_default,
     );
 
-    const alasanFinal = generateAlasan(
-      userData,
+    const waktuData = generateWaktuFromSession(
       waktu_luang,
       rekomendasiData.kategori_waktu,
-      faktorDominan,
+      sessionData,
     );
 
-    const skorPersen = Math.round(skor * 100);
+    const planner = generatePlanner(waktuData.start, sessionData);
 
+    /* =========================
+       🔥 ALASAN (BARU)
+    ========================= */
+    const alasan = generateAlasan(userData, faktorDominan);
+
+    /* =========================
+       DESKRIPSI
+    ========================= */
+    const deskripsiAI = `Rekomendasi ini disesuaikan dengan kondisi kamu, terutama pada ${faktorDominan.join(
+      " dan ",
+    )}.`;
+
+    /* =========================
+       SIMPAN
+    ========================= */
     const data = await hasilSpkCollection.create({
       nama,
       gender,
@@ -325,22 +303,25 @@ const postHitung = async (req, res) => {
       status,
       aktivitas,
       waktu_luang,
-      konsentrasi,
-      konsistensi,
-      durasi,
-      kelelahan,
-      lingkungan,
-      gangguan,
+      ...userData,
       skor: skorPersen,
+
       rekomendasi: {
         kode: rekomendasiData.kode,
         judul: rekomendasiData.judul,
-        waktu: waktuFinal,
-        pola: rekomendasiData.pola_default,
-        deskripsi: deskripsiFinal,
-        tips: tipsFinal,
-        alasan: alasanFinal,
-        faktor: faktorDominan.map((f) => f.nama),
+
+        waktu: waktuData.text,
+        pola: `${sessionData.belajar} menit belajar, ${sessionData.istirahat} menit istirahat (${sessionData.sesi} sesi)`,
+
+        deskripsi: deskripsiAI,
+        tips: rekomendasiData.tips_base || [],
+        alasan: alasan, // 🔥 FIX DI SINI
+        faktor: faktorDominan,
+
+        ai_path: decisionPath,
+        feature_importance: featureImportance,
+
+        jadwal: planner,
       },
     });
 
@@ -356,6 +337,9 @@ const postHitung = async (req, res) => {
   }
 };
 
+/* =========================
+   RIWAYAT
+========================= */
 const getRiwayat = async (req, res) => {
   const riwayat = await hasilSpkCollection
     .find()

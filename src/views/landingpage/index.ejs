@@ -57,7 +57,7 @@
   
   <section class="py-lg-13 py-8 bg-white position-relative" id="riwayat">
     <div class="container">
-      
+
       <div class="text-center mb-10">
         <span class="text-primary text-uppercase small fw-semibold">
           Riwayat
@@ -78,27 +78,46 @@
             <div class="col-lg-4 col-md-6">
               <div class="card border-0 shadow-sm rounded-5 h-100 p-4">
 
+                <!-- HEADER -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <h6 class="fw-bold mb-0"><%= item.nama %></h6>
                   <span class="badge bg-primary bg-opacity-10 text-primary">
-                    <%= item.skor %>
+                    <%= item.skor %>%
                   </span>
                 </div>
 
+                <!-- JUDUL -->
                 <h5 class="fw-semibold mb-2">
                   <%= item.rekomendasi.judul %>
                 </h5>
 
+                <!-- WAKTU -->
                 <p class="small text-muted mb-1">
-                  <strong>Waktu:</strong> <%= item.rekomendasi.waktu %>
+                  ⏰ <strong><%= item.rekomendasi.waktu %></strong>
                 </p>
 
-                <p class="small text-muted mb-3">
-                  <strong>Pola:</strong> <%= item.rekomendasi.pola %>
+                <!-- POLA -->
+                <p class="small text-muted mb-2">
+                  📘 <%= item.rekomendasi.pola %>
                 </p>
 
+                <!-- 🔥 FAKTOR DOMINAN -->
+                <% if (item.rekomendasi.faktor && item.rekomendasi.faktor.length > 0) { %>
+                  <div class="mb-3">
+                    <small class="text-muted">Faktor utama:</small>
+                    <div class="mt-1 d-flex flex-wrap gap-1">
+                      <% item.rekomendasi.faktor.slice(0,2).forEach(f => { %>
+                        <span class="badge bg-warning text-dark">
+                          <%= f %>
+                        </span>
+                      <% }) %>
+                    </div>
+                  </div>
+                <% } %>
+
+                <!-- BUTTON -->
                 <a href="#"
-                  class="btn-detail"
+                  class="btn-detail mt-auto text-decoration-none fw-semibold text-primary"
 
                   data-nama="<%= item.nama %>"
                   data-skor="<%= item.skor %>"
@@ -122,7 +141,11 @@
 
                   data-tips='<%- JSON.stringify(item.rekomendasi.tips || []) %>'
                   data-alasan='<%- JSON.stringify(item.rekomendasi.alasan || []) %>'
-                  data-faktor='<%- JSON.stringify(item.rekomendasi.faktor || []) %>'>
+                  data-faktor='<%- JSON.stringify(item.rekomendasi.faktor || []) %>'
+
+                  
+                  data-jadwal='<%- JSON.stringify(item.rekomendasi.jadwal || []) %>'
+                  data-ai_path='<%- JSON.stringify(item.rekomendasi.ai_path || []) %>'>
 
                   Lihat detail →
                 </a>

@@ -55,19 +55,19 @@
 
           <h5 class="fw-bold text-center mb-4">Rekomendasi Belajar</h5>
 
-          <% if (rekomendasi && Object.keys(rekomendasi).length > 0) { %>
+          <% if (rekomendasi) { %>
 
           <div class="row g-3 mb-4">
 
             <div class="col-md-6">
-              <div class="p-3 border rounded-3 bg-light h-100 text-center">
+              <div class="p-3 border rounded-3 bg-light text-center">
                 <small class="text-muted">Metode</small>
                 <h6 class="fw-bold mt-1"><%= rekomendasi.judul %></h6>
               </div>
             </div>
 
             <div class="col-md-6">
-              <div class="p-3 border rounded-3 bg-light h-100 text-center">
+              <div class="p-3 border rounded-3 bg-light text-center">
                 <small class="text-muted">Waktu Ideal</small>
                 <h6 class="fw-bold mt-1"><%= rekomendasi.waktu %></h6>
               </div>
@@ -82,25 +82,45 @@
 
           </div>
 
+          <div class="mb-4">
+            <h6 class="fw-bold">Jadwal Belajar</h6>
+
+            <% if (rekomendasi.jadwal && rekomendasi.jadwal.length > 0) { %>
+              <div class="p-3 border rounded-3 bg-light">
+
+                <% rekomendasi.jadwal.forEach(item => { %>
+
+                  <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded"
+                       style="background: <%= item.type === 'Belajar' ? '#e8f5e9' : '#fff3e0' %>">
+
+                    <div>
+                      <%= item.type === "Belajar" ? "Sesi " + item.sesi : "Istirahat" %>
+                    </div>
+
+                    <div class="fw-semibold">
+                      <%= item.waktu %>
+                    </div>
+
+                  </div>
+
+                <% }) %>
+
+              </div>
+            <% } else { %>
+              <p class="text-muted">Jadwal belum tersedia</p>
+            <% } %>
+          </div>
+
           <% if (rekomendasi.faktor && rekomendasi.faktor.length > 0) { %>
           <div class="mb-4">
-            <h6 class="fw-bold">Faktor Dominan</h6>
+            <h6 class="fw-bold">Faktor Utama</h6>
             <div class="d-flex flex-wrap gap-2 mt-2">
               <% rekomendasi.faktor.forEach(f => { %>
-                <span class="badge bg-warning text-dark">
-                  <%= f %>
-                </span>
+                <span class="badge bg-warning text-dark"><%= f %></span>
               <% }) %>
             </div>
           </div>
           <% } %>
-
-          <div class="mb-4">
-            <h6 class="fw-bold">Penjelasan</h6>
-            <div class="p-3 border rounded-3 bg-light">
-              <%= rekomendasi.deskripsi %>
-            </div>
-          </div>
 
           <div class="mb-4">
             <h6 class="fw-bold">Alasan Rekomendasi</h6>
@@ -108,43 +128,65 @@
             <% if (rekomendasi.alasan && rekomendasi.alasan.length > 0) { %>
               <ul class="list-group">
                 <% rekomendasi.alasan.forEach(a => { %>
-                  <li class="list-group-item">
-                    ➡ <%= a %>
-                  </li>
+                  <li class="list-group-item"><%= a %></li>
                 <% }) %>
               </ul>
-            <% } else { %>
-              <p class="text-muted">
-                Berdasarkan analisis kondisi belajar kamu.
-              </p>
             <% } %>
           </div>
 
+          <%
+          function buildNarasi(aiPath, faktor) {
+            let hasil = [];
+
+            (aiPath || []).forEach(step => {
+              if (step.includes("Konsentrasi")) hasil.push("konsentrasi kamu masih belum optimal");
+              if (step.includes("Konsistensi")) hasil.push("konsistensi belajar kamu masih belum stabil");
+              if (step.includes("Durasi")) hasil.push("durasi belajar kamu masih terbatas");
+              if (step.includes("Kelelahan")) hasil.push("kamu mudah merasa lelah saat belajar");
+              if (step.includes("Lingkungan")) hasil.push("lingkungan belajar kurang kondusif");
+              if (step.includes("Gangguan")) hasil.push("terdapat banyak gangguan saat belajar");
+            });
+
+            hasil = [...new Set(hasil)];
+
+            return `
+              Berdasarkan analisis sistem, ditemukan bahwa ${hasil.join(", ")}.
+              Kondisi ini menyebabkan proses belajar menjadi kurang optimal.
+
+              Oleh karena itu, sistem merekomendasikan metode belajar yang lebih sesuai,
+              terutama dengan mempertimbangkan faktor ${faktor.join(" dan ")}.
+            `;
+          }
+
+          const narasiAI = buildNarasi(rekomendasi.ai_path, rekomendasi.faktor);
+          %>
+
           <div class="mb-4">
-            <h6 class="fw-bold">Tips Praktis</h6>
+            <h6 class="fw-bold">Penjelasan</h6>
+            <div class="p-3 border rounded-3 bg-light">
+              <%= narasiAI %>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h6 class="fw-bold">Tips untuk Kamu</h6>
 
             <% if (rekomendasi.tips && rekomendasi.tips.length > 0) { %>
               <ul class="list-group">
                 <% rekomendasi.tips.forEach(t => { %>
-                  <li class="list-group-item">
-                    ✔ <%= t %>
-                  </li>
+                  <li class="list-group-item">- <%= t %></li>
                 <% }) %>
               </ul>
-            <% } else { %>
-              <p class="text-muted">Tidak ada tips</p>
             <% } %>
           </div>
 
-          <% } else { %>
-            <p class="text-muted text-center">Tidak ada rekomendasi tersedia</p>
           <% } %>
 
         </div>
 
         <div class="text-center px-4 pb-3">
           <small class="text-muted">
-            Sistem ini menggunakan metode SAW dan pendekatan Explainable AI untuk menghasilkan rekomendasi yang transparan.
+            Sistem ini menggunakan AI dan Explainable AI untuk memberikan rekomendasi yang transparan dan mudah dipahami.
           </small>
         </div>
 
