@@ -1,6 +1,6 @@
-import mongoose from "../config/db.js";
+import connectDB from "../config/db.js";
 
-const rekomendasiSchema = new mongoose.Schema({
+const rekomendasiSchema = new connectDB.Schema({
   kode: Number,
   judul: String,
 
@@ -11,7 +11,7 @@ const rekomendasiSchema = new mongoose.Schema({
   tips_base: [String],
 });
 
-const Rekomendasi = mongoose.model(
+const Rekomendasi = connectDB.model(
   "Rekomendasi",
   rekomendasiSchema,
   "rekomendasilist",
