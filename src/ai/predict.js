@@ -1,7 +1,20 @@
 import tree from "./model.js";
 
 // HELPER: VALIDASI INPUT
+function hitungSkor(user) {
+  return (
+    (user.konsentrasi / 5) * 0.2 +
+    (user.konsistensi / 5) * 0.2 +
+    (user.durasi / 5) * 0.15 +
+    (user.kelelahan / 5) * 0.15 +
+    (user.lingkungan / 5) * 0.15 +
+    (user.gangguan / 5) * 0.15
+  );
+}
+
 function toNumericArray(user) {
+  const skor = hitungSkor(user);
+
   return [
     Number(user.konsentrasi),
     Number(user.konsistensi),
@@ -9,6 +22,10 @@ function toNumericArray(user) {
     Number(user.kelelahan),
     Number(user.lingkungan),
     Number(user.gangguan),
+    ["sekolah", "kuliah", "bekerja"].indexOf(
+      String(user.aktivitas).toLowerCase().trim(),
+    ),
+    skor,
   ];
 }
 

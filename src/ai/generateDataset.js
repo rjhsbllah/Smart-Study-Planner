@@ -81,7 +81,7 @@ function hitungSkor(x) {
 const aktivitasList = ["sekolah", "kuliah", "bekerja"];
 const rand = () => Math.floor(Math.random() * 5) + 1;
 
-function generateDataset(N = 300) {
+function generateDataset(N = 2000) {
   const out = [];
   for (let i = 0; i < N; i++) {
     const d = {
@@ -104,6 +104,8 @@ function generateDataset(N = 300) {
         d.kelelahan,
         d.lingkungan,
         d.gangguan,
+        aktivitasList.indexOf(d.aktivitas), // ✅ TAMBAH
+        skor, // ✅ TAMBAH
       ],
       label,
     });
@@ -111,6 +113,6 @@ function generateDataset(N = 300) {
   return out;
 }
 
-const data = generateDataset(300);
+const data = generateDataset(2000);
 fs.writeFileSync("src/ai/dataset.json", JSON.stringify(data, null, 2));
 console.log("dataset.json dibuat");

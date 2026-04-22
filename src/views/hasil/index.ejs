@@ -90,8 +90,7 @@
 
                 <% rekomendasi.jadwal.forEach(item => { %>
 
-                  <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded"
-                       style="background: <%= item.type === 'Belajar' ? '#e8f5e9' : '#fff3e0' %>">
+                  <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style="background: <%= item.type === 'Belajar' ? '#e8f5e9' : '#fff3e0' %>">
 
                     <div>
                       <%= item.type === "Belajar" ? "Sesi " + item.sesi : "Istirahat" %>
@@ -135,30 +134,84 @@
           </div>
 
           <%
-          function buildNarasi(aiPath, faktor) {
+          function buildNarasi(aiPath, faktor, user) {
             let hasil = [];
 
             (aiPath || []).forEach(step => {
-              if (step.includes("Konsentrasi")) hasil.push("konsentrasi kamu masih belum optimal");
-              if (step.includes("Konsistensi")) hasil.push("konsistensi belajar kamu masih belum stabil");
-              if (step.includes("Durasi")) hasil.push("durasi belajar kamu masih terbatas");
-              if (step.includes("Kelelahan")) hasil.push("kamu mudah merasa lelah saat belajar");
-              if (step.includes("Lingkungan")) hasil.push("lingkungan belajar kurang kondusif");
-              if (step.includes("Gangguan")) hasil.push("terdapat banyak gangguan saat belajar");
+
+              if (step.includes("Konsentrasi")) {
+                if (user.konsentrasi >= 4) {
+                  hasil.push("konsentrasi kamu sudah cukup baik");
+                } else {
+                  hasil.push("konsentrasi kamu masih perlu ditingkatkan");
+                }
+              }
+
+              if (step.includes("Konsistensi")) {
+                if (user.konsistensi >= 4) {
+                  hasil.push("konsistensi belajar kamu sudah cukup stabil");
+                } else {
+                  hasil.push("konsistensi belajar kamu masih belum stabil");
+                }
+              }
+
+              if (step.includes("Durasi")) {
+                if (user.durasi >= 4) {
+                  hasil.push("durasi belajar kamu sudah cukup optimal");
+                } else {
+                  hasil.push("durasi belajar kamu masih terbatas");
+                }
+              }
+
+              if (step.includes("Kelelahan")) {
+                if (user.kelelahan >= 4) {
+                  hasil.push("kamu cenderung mudah merasa lelah saat belajar");
+                } else {
+                  hasil.push("kondisi fisik kamu cukup mendukung untuk belajar");
+                }
+              }
+
+              if (step.includes("Lingkungan")) {
+                if (user.lingkungan >= 4) {
+                  hasil.push("lingkungan belajar kamu sudah cukup kondusif");
+                } else {
+                  hasil.push("lingkungan belajar kamu kurang mendukung");
+                }
+              }
+
+              if (step.includes("Gangguan")) {
+                if (user.gangguan >= 4) {
+                  hasil.push("terdapat cukup banyak gangguan saat belajar");
+                } else {
+                  hasil.push("gangguan saat belajar relatif rendah");
+                }
+              }
+
             });
 
+            // hapus duplikat
             hasil = [...new Set(hasil)];
+
+            if (hasil.length === 0) {
+              return `
+                Sistem menganalisis kondisi belajar kamu secara keseluruhan
+                dan memberikan rekomendasi yang paling sesuai untuk meningkatkan efektivitas belajar.
+              `;
+            }
 
             return `
               Berdasarkan analisis sistem, ditemukan bahwa ${hasil.join(", ")}.
-              Kondisi ini menyebabkan proses belajar menjadi kurang optimal.
-
+              
+              Kondisi ini mempengaruhi efektivitas proses belajar kamu.
               Oleh karena itu, sistem merekomendasikan metode belajar yang lebih sesuai,
               terutama dengan mempertimbangkan faktor ${faktor.join(" dan ")}.
             `;
           }
-
-          const narasiAI = buildNarasi(rekomendasi.ai_path, rekomendasi.faktor);
+          const narasiAI = buildNarasi(
+            rekomendasi.ai_path,
+            rekomendasi.faktor,
+            data
+          );
           %>
 
           <div class="mb-4">
