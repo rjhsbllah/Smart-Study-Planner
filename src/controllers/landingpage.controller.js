@@ -8,10 +8,6 @@ import {
   getFeatureImportance,
 } from "../ai/predict.js";
 
-// =======================
-// MAP FITUR (WAJIB 8)
-// =======================
-
 const fiturMap = {
   0: "Konsentrasi",
   1: "Konsistensi",
@@ -22,10 +18,6 @@ const fiturMap = {
   6: "Aktivitas",
   7: "Skor",
 };
-
-// =======================
-// UTIL
-// =======================
 
 function formatTime(time) {
   const jam = Math.floor(time);
@@ -95,7 +87,6 @@ function generateNarasiAI(aiPath) {
     }
   });
 
-  // hilangkan duplikat
   kondisi = [...new Set(kondisi)];
 
   if (kondisi.length === 0) {
@@ -153,10 +144,6 @@ function generatePlanner(start, sessionData) {
   return jadwal;
 }
 
-// =======================
-// ALASAN (STABIL)
-// =======================
-
 function generateAlasan(user, faktor) {
   const alasan = [];
 
@@ -197,10 +184,6 @@ function generateAlasan(user, faktor) {
   return alasan;
 }
 
-// =======================
-// CONTROLLER
-// =======================
-
 const getAllHasilSpk = async (req, res) => {
   await connectDB();
 
@@ -233,17 +216,9 @@ const postHitung = async (req, res) => {
       gangguan: Number(req.body.gangguan),
     };
 
-    // =======================
-    // VALIDASI
-    // =======================
-
     if (Object.values(userData).some((v) => isNaN(v))) {
       return res.send("Input tidak valid");
     }
-
-    // =======================
-    // SAW
-    // =======================
 
     const skor =
       (userData.konsentrasi / 5) * 0.2 +
@@ -255,18 +230,10 @@ const postHitung = async (req, res) => {
 
     const skorPersen = Math.round(skor * 100);
 
-    // =======================
-    // AI PREDIKSI
-    // =======================
-
     let kodeTerpilih = prediksiAI({
       ...userData,
       aktivitas,
     });
-
-    // =======================
-    // DECISION PATH (FULL)
-    // =======================
 
     const rawPath = getDecisionPath([
       userData.konsentrasi,
@@ -287,10 +254,6 @@ const postHitung = async (req, res) => {
       )
       .map((s) => s.replace(/(\d+\.\d+)/g, (num) => Number(num).toFixed(2)));
 
-    // =======================
-    // FEATURE IMPORTANCE
-    // =======================
-
     let rawImportance = getFeatureImportance();
 
     let importanceObj =
@@ -306,10 +269,6 @@ const postHitung = async (req, res) => {
       {},
     );
 
-    // =======================
-    // FAKTOR DOMINAN
-    // =======================
-
     let faktorDominan = Object.entries(featureImportance)
       .sort((a, b) => b[1] - a[1])
       .filter(([nama]) => !["Aktivitas", "Skor"].includes(nama))
@@ -320,19 +279,10 @@ const postHitung = async (req, res) => {
       faktorDominan = ["Konsentrasi"];
     }
 
-    // =======================
-    // ALASAN
-    // =======================
-
     const alasanManual = generateAlasan(userData, faktorDominan);
     const narasiAI = generateNarasiAI(decisionPath);
 
-    // gabungkan
     const alasan = [narasiAI, ...alasanManual];
-
-    // =======================
-    // REKOMENDASI
-    // =======================
 
     const rekomendasiData = await Rekomendasi.findOne({
       kode: kodeTerpilih,
@@ -354,10 +304,6 @@ const postHitung = async (req, res) => {
     );
 
     const planner = generatePlanner(waktuData.start, sessionData);
-
-    // =======================
-    // SIMPAN
-    // =======================
 
     const data = await hasilSpkCollection.create({
       nama,

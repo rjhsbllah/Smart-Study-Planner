@@ -1,12 +1,8 @@
 import fs from "fs";
-import tree from "./model.js"; // ✅ pakai model yang sama
+import tree from "./model.js";
 
 const raw = fs.readFileSync("src/ai/dataset.json");
 const data = JSON.parse(raw);
-
-// ======================
-// TESTING AKURASI
-// ======================
 
 let benar = 0;
 
@@ -16,10 +12,6 @@ data.forEach((d) => {
 });
 
 const akurasi = (benar / data.length) * 100;
-
-// ======================
-// TEST USER
-// ======================
 
 const inputUser = {
   konsentrasi: 4,
@@ -31,7 +23,6 @@ const inputUser = {
   aktivitas: "kuliah",
 };
 
-// SAW
 const skor =
   (inputUser.konsentrasi / 5) * 0.2 +
   (inputUser.konsistensi / 5) * 0.2 +
@@ -40,7 +31,6 @@ const skor =
   (inputUser.lingkungan / 5) * 0.15 +
   (inputUser.gangguan / 5) * 0.15;
 
-// 8 fitur (WAJIB SAMA)
 const fiturUser = [
   inputUser.konsentrasi,
   inputUser.konsistensi,
@@ -53,10 +43,6 @@ const fiturUser = [
 ];
 
 const hasil = tree.predict([fiturUser])[0];
-
-// ======================
-// OUTPUT
-// ======================
 
 console.log("=================================");
 console.log("HASIL PENGUJIAN MODEL");

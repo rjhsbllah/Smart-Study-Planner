@@ -1,6 +1,5 @@
 import tree from "./model.js";
 
-// HELPER: VALIDASI INPUT
 function hitungSkor(user) {
   return (
     (user.konsentrasi / 5) * 0.2 +
@@ -29,12 +28,10 @@ function toNumericArray(user) {
   ];
 }
 
-// PREDIKSI AI
 export function prediksiAI(user) {
   try {
     const input = [toNumericArray(user)];
 
-    // safety
     if (!tree) {
       console.warn("Tree belum tersedia");
       return 0;
@@ -49,7 +46,6 @@ export function prediksiAI(user) {
   }
 }
 
-// DECISION PATH (XAI)
 export function getDecisionPath(sample) {
   try {
     let node = tree?.root;
@@ -87,7 +83,6 @@ export function getDecisionPath(sample) {
   }
 }
 
-// FEATURE IMPORTANCE
 export function getFeatureImportance() {
   try {
     const imp = {};
