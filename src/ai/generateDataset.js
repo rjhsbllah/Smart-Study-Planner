@@ -105,7 +105,6 @@ function generateDataset(N = 2000) {
         d.lingkungan,
         d.gangguan,
         aktivitasList.indexOf(d.aktivitas),
-        skor, 
       ],
       label,
     });

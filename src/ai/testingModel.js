@@ -14,13 +14,13 @@ data.forEach((d) => {
 const akurasi = (benar / data.length) * 100;
 
 const inputUser = {
-  konsentrasi: 4,
-  konsistensi: 4,
-  durasi: 5,
+  konsentrasi: 3,
+  konsistensi: 3,
+  durasi: 4,
   kelelahan: 3,
-  lingkungan: 4,
-  gangguan: 4,
-  aktivitas: "kuliah",
+  lingkungan: 3,
+  gangguan: 2,
+  aktivitas: "bekerja",
 };
 
 const skor =
